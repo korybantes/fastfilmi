@@ -178,5 +178,24 @@ const availableSources = [
             movie: 'https://player.videasy.net/movie/{id}?color=8834ec',
             tv: 'https://player.videasy.net/tv/{id}/{season}/{episode}?color=8834ec'
         }
+    },
+    {
+        id: 'vidfast',
+        name: 'VidFast',
+        isFrench: false,
+        urls: {
+            movie: 'https://vidfast.pro/movie/{id}',
+            tv: 'https://vidfast.pro/tv/{id}/{season}/{episode}'
+        }
+    },
+    {
+        id: 'cinepulse',
+        name: 'CinePulse (4K)',
+        isFrench: true,
+        isApiResponse: true,
+        urls: {
+            movie: 'https://api.cinepulse.fr/watch/sources?tmdbId={id}&type=movie',
+            tv: 'https://api.cinepulse.fr/watch/sources?tmdbId={id}&type=tv&season={season}&episode={episode}'
+        }
     }
 ];
