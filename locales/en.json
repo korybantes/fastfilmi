@@ -1,0 +1,75 @@
+{
+  "settings": {
+    "pageTitle": "Settings - Fastfilmy",
+    "headerTitle": "Settings",
+    "headerSubtitle": "Customize your Fastfilmy experience",
+    "sidebar": {
+      "back": "Back",
+      "defaultSource": "Default Source",
+      "appearance": "Appearance",
+      "contentPreferences": "Content Preferences",
+      "dataManagement": "Data Management"
+    },
+    "wipBanner": {
+      "title": "Work in Progress",
+      "description": "Fastfilmy's settings page is currently under active development. More customization options will be added soon."
+    },
+    "defaultSource": {
+      "title": "Default Source",
+      "description": "Choose your preferred default source for streaming content",
+      "frenchContent": "French Content",
+      "englishContent": "English Content"
+    },
+    "appearance": {
+      "title": "Appearance",
+      "description": "Customize how Fastfilmy looks and feels",
+      "backgroundParticles": "Background Particles",
+      "backgroundParticlesDesc": "Toggle animated particle effect",
+      "updateNotice": "Update Notice",
+      "updateNoticeDesc": "Toggle update notifications",
+      "contentLanguage": "Content Language",
+      "contentLanguageDesc": "Select content language",
+      "languages": {
+          "english": "English",
+          "french": "French",
+          "turkish": "Turkish",
+          "polish": "Polish"
+      }
+    },
+    "contentPreferences": {
+      "title": "Content Preferences",
+      "description": "Adjust content filtering options",
+      "region": "Region",
+      "regionDesc": "Prioritize content popular in your region",
+      "regions": {
+          "us": "United States",
+          "gb": "United Kingdom",
+          "ca": "Canada",
+          "au": "Australia",
+          "de": "Germany",
+          "fr": "France",
+          "jp": "Japan",
+          "kr": "South Korea",
+          "in": "India",
+          "tr": "Turkey",
+          "pl": "Poland"
+      },
+      "includeAdult": "Include Adult Content",
+      "includeAdultDesc": "Show content marked as 18+"
+    },
+    "dataManagement": {
+      "title": "Data Management",
+      "description": "Manage your locally stored data",
+      "watchLater": "Watch Later List",
+      "watchLaterDesc": "Permanently clear all items from your watch later list.",
+      "clearButton": "Clear List",
+      "clearConfirmation": "Are you sure you want to clear your Watch Later list? This cannot be undone.",
+      "clearSuccess": "Watch Later list cleared."
+    },
+    "mobileWarning": {
+        "title": "Mobile Experience Limited",
+        "description": "The settings page isn't fully optimized for mobile devices yet. For the best experience, please use a desktop browser.",
+        "understandButton": "I understand"
+    }
+  }
+} 

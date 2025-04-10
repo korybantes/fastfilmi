@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfect Movie Finder - Fastfilmy</title>
+    <meta content="Fastfilmy - Perfect Movie Finder" property="og:title"/>
+    <meta content="Find your perfect movie match with our interactive wizard" property="og:description"/>
+    <meta content="https://fastfilmy.top/wizard.html" property="og:url"/> 
+    <meta content="logo.png" property="og:image"/>
+    <meta content="#09091C" data-react-helmet="true" name="theme-color"/>
+    <link rel="icon" type="image/x-icon" href="logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.10.3/cdn.min.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        neo: {
+                            bg: '#09091C',
+                            card: '#12123B',
+                            accent: '#FF2E9F',
+                            secondary: '#6919E6',
+                            tertiary: '#00F0C8',
+                            highlight: '#3B82F6',
+                            text: '#F0F4FA',
+                            textDark: '#94A3B8',
+                        }
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 10s ease infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'shimmer': 'shimmer 2.5s linear infinite',
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'fade-out': 'fadeOut 0.5s ease-in forwards',
+                        'swipe-right': 'swipeRight 0.5s ease-out forwards',
+                        'swipe-left': 'swipeLeft 0.5s ease-out forwards',
+                        'stir': {
+                            '0%': { transform: 'rotate(0deg)' },
+                            '25%': { transform: 'rotate(15deg)' },
+                            '50%': { transform: 'rotate(0deg)' },
+                            '75%': { transform: 'rotate(-15deg)' },
+                            '100%': { transform: 'rotate(0deg)' }
+                        },
+                        'bubble': {
+                            '0%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                            '100%': { transform: 'translateY(0)' }
+                        },
+                        'ingredient-drop': {
+                            '0%': { transform: 'translateY(-20px)', opacity: 0 },
+                            '70%': { transform: 'translateY(5px)', opacity: 1 },
+                            '100%': { transform: 'translateY(0)', opacity: 1 }
+                        },
+                        'celebrate': {
+                            '0%': { transform: 'scale(1)' },
+                            '50%': { transform: 'scale(1.2)' },
+                            '100%': { transform: 'scale(1)' }
+                        }
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': { 'background-position': '0% 50%' },
+                            '50%': { 'background-position': '100% 50%' },
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        'shimmer': {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' },
+                        },
+                        fadeIn: {
+                            'from': { opacity: 0, transform: 'translateY(10px)' },
+                            'to': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                        fadeOut: {
+                            'from': { opacity: 1, transform: 'translateY(0)' },
+                            'to': { opacity: 0, transform: 'translateY(-10px)' },
+                        },
+                        swipeRight: {
+                            'from': { opacity: 1, transform: 'translateX(0) rotate(0)' },
+                            'to': { opacity: 0, transform: 'translateX(200px) rotate(20deg)' },
+                        },
+                        swipeLeft: {
+                            'from': { opacity: 1, transform: 'translateX(0) rotate(0)' },
+                            'to': { opacity: 0, transform: 'translateX(-200px) rotate(-20deg)' },
+                        }
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            background-color: #09091C;
+            background-image: 
+                radial-gradient(circle at 20% 35%, rgba(105, 25, 230, 0.15) 0%, transparent 30%),
+                radial-gradient(circle at 85% 20%, rgba(0, 240, 200, 0.15) 0%, transparent 30%),
+                radial-gradient(circle at 10% 85%, rgba(255, 46, 159, 0.15) 0%, transparent 30%);
+            background-attachment: fixed;
+            overscroll-behavior: none; /* Prevents bounce effect on mobile */
+            touch-action: manipulation; /* Improves touch handling */
+        }
+        
+        /* Navigation */
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 0.5rem 0;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(90deg, #FF2E9F, #6919E6);
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #00F0C8;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        /* Glass Effect */
+        .glass-effect {
+            background: rgba(9, 9, 28, 0.7);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Neo Button */
+        .neo-button {
+            background: linear-gradient(90deg, #FF2E9F, #6919E6);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .neo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -6px rgba(255, 46, 159, 0.6);
+        }
+        .neo-button::after {
+            content: '';
+            position: absolute;
+            left: -50%;
+            top: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                60deg, 
+                rgba(255, 255, 255, 0) 10%,
+                rgba(255, 255, 255, 0.1) 30%, 
+                rgba(255, 255, 255, 0) 50%
+            );
+            transform: rotate(45deg);
+            transition: all 0.8s ease;
+            z-index: -1;
+        }
+        .neo-button:hover::after {
+            left: 100%;
+            top: 100%;
+        }
+        
+        /* Wizard Specific Styles */
+        .wizard-step {
+            animation: fade-in 0.6s ease-out forwards;
+            min-height: 60vh; /* Ensure consistent height */
+        }
+        
+        /* Genre Selection */
+        .genre-card {
+            background: rgba(18, 18, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative; 
+            overflow: hidden;
+        }
+        
+        .genre-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 240, 200, 0.3);
+            box-shadow: 0 10px 25px -10px rgba(0, 240, 200, 0.2);
+        }
+
+        .genre-card.selected {
+            border-color: #FF2E9F;
+            background: linear-gradient(135deg, rgba(255, 46, 159, 0.3), rgba(105, 25, 230, 0.3));
+            box-shadow: 0 0 15px rgba(255, 46, 159, 0.5);
+        }
+        
+        .genre-card.selected::before {
+            content: '✓'; /* Checkmark */
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #FF2E9F;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-shadow: 0 0 5px #FF2E9F;
+        }
+
+        /* Progress Bar */
+        .progress-bar-bg {
+            background-color: rgba(18, 18, 59, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .progress-bar-fill {
+            background: linear-gradient(90deg, #FF2E9F, #6919E6);
+            transition: width 0.5s ease-out;
+        }
+
+        /* Movie Cards & Swiping */
+        .movie-card {
+            background-size: cover;
+            background-position: center;
+            height: 70vh;
+            max-height: 600px;
+            width: 100%;
+            max-width: 400px;
+            position: absolute;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            touch-action: none; /* Important for touch events */
+        }
+        
+        .movie-card::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: linear-gradient(to top, rgba(9, 9, 28, 0.9), transparent);
+            z-index: 1;
+        }
+        
+        .movie-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            z-index: 2;
+        }
+        
+        .swipe-buttons {
+            position: fixed;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            z-index: 20;
+        }
+        
+        .swipe-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
+        }
+        
+        .swipe-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .like-btn {
+            background: linear-gradient(135deg, #00F0C8, #3B82F6);
+        }
+        
+        .dislike-btn {
+            background: linear-gradient(135deg, #FF2E9F, #FF6B6B);
+        }
+        
+        /* Spinner for loading */
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left-color: #00F0C8;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Cooking Animation Styles */
+        .cooking-bowl {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(45deg, #2A2A2A, #3A3A3A);
+            border-radius: 50% 50% 8px 8px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+        
+        .cooking-bowl::before {
+            content: '';
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            right: 10%;
+            bottom: 10%;
+            background: linear-gradient(45deg, #FF2E9F, #6919E6);
+            border-radius: 50%;
+            filter: blur(8px);
+            animation: cook 3s infinite;
+        }
+        
+        .ingredient {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: float 3s infinite ease-in-out;
+        }
+        
+        .spoon {
+            position: absolute;
+            width: 40px;
+            height: 8px;
+            background: #4A4A4A;
+            border-radius: 4px;
+            top: 50%;
+            left: 50%;
+            transform-origin: 100% 50%;
+            transform: translate(-50%, -50%) rotate(0deg);
+            animation: stir 2s infinite ease-in-out;
+        }
+        
+        .movie-time-alert {
+            background: linear-gradient(135deg, rgba(255, 46, 159, 0.2), rgba(105, 25, 230, 0.2));
+            border-radius: 24px;
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .floating-popcorn {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            animation: float 4s infinite ease-in-out;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="text-neo-text min-h-screen flex flex-col" x-data="wizardApp()">
+
+    <!-- Navigation -->
+    <nav class="w-full z-10 glass-effect sticky top-0">
+        <div class="container mx-auto px-6 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="h-11 w-11 bg-gradient-to-br from-neo-accent via-neo-secondary to-neo-tertiary rounded-2xl flex items-center justify-center shadow-lg shadow-neo-secondary/20">
+                    <img src="logo.png" alt="Fastfilmy Logo" class="h-7 w-7 animate-float">
+                </div>
+                <span class="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-neo-accent via-neo-tertiary to-neo-highlight">Perfect Movie Finder</span>
+            </div>
+            <a href="index.html" class="nav-link text-sm">Back to Home</a>
+        </div>
+    </nav>
+
+    <!-- Wizard Container -->
+    <main class="flex-grow container mx-auto px-6 py-8 flex flex-col items-center">
+        <div class="w-full max-w-4xl">
+
+            <!-- Progress Bar (visible during questions) -->
+            <div class="mb-10" x-show="!matchPhase && currentStep <= totalSteps">
+                <div class="flex justify-between text-sm text-neo-textDark mb-2">
+                    <span x-text="`Step ${currentStep} of ${totalSteps}`"></span>
+                    <span x-text="`${Math.round((currentStep / totalSteps) * 100)}% Complete`"></span>
+                </div>
+                <div class="w-full progress-bar-bg rounded-full h-2.5">
+                    <div class="progress-bar-fill h-2.5 rounded-full" :style="`width: ${(currentStep / totalSteps) * 100}%`"></div>
+                </div>
+            </div>
+            
+            <!-- Step 1: Genre Selection -->
+            <div x-show="currentStep === 1" class="wizard-step">
+                <h2 class="text-3xl font-bold mb-2 text-center bg-clip-text text-transparent bg-gradient-to-r from-neo-tertiary to-neo-highlight">What genres are you in the mood for?</h2>
+                <p class="text-lg text-neo-textDark text-center mb-8">Select one or more genres to narrow down your matches</p>
+                
+                <!-- Loading State -->
+                <div x-show="loadingGenres" class="flex justify-center items-center min-h-[30vh]">
+                    <div class="spinner"></div>
+                </div>
+
+                <!-- Genre Grid -->
+                <div x-show="!loadingGenres" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-8">
+                    <template x-for="genre in genres" :key="genre.id">
+                        <button @click="toggleGenre(genre.id)"
+                                :class="{ 'selected': selectedGenres.includes(genre.id) }"
+                                class="genre-card p-4 rounded-2xl text-center">
+                            <span class="font-medium" x-text="genre.name"></span>
+                        </button>
+                    </template>
+                </div>
+
+                <div class="flex justify-center mt-8">
+                    <button @click="nextStep()"
+                            :disabled="selectedGenres.length === 0"
+                            class="neo-button text-white px-8 py-3 rounded-xl text-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed">
+                        Continue
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Year Range -->
+            <div x-show="currentStep === 2" class="wizard-step">
+                <h2 class="text-3xl font-bold mb-2 text-center bg-clip-text text-transparent bg-gradient-to-r from-neo-tertiary to-neo-highlight">How recent should it be?</h2>
+                <p class="text-lg text-neo-textDark text-center mb-8">Select a year range for your movie</p>
+                
+                <div class="bg-neo-card/50 backdrop-blur-md rounded-2xl p-6 mb-8">
+                    <div class="mb-4">
+                        <span x-text="`${yearRange[0]} - ${yearRange[1]}`" class="block text-center text-xl font-medium mb-4"></span>
+                        
+                        <div class="relative h-2 bg-neo-bg rounded-full mb-2">
+                            <div class="absolute inset-0 h-full rounded-full" 
+                                 :style="`left: ${((yearRange[0] - 1950) / (2023 - 1950)) * 100}%; right: ${100 - ((yearRange[1] - 1950) / (2023 - 1950)) * 100}%;`"
+                                 style="background: linear-gradient(90deg, #FF2E9F, #6919E6);"></div>
+                        </div>
+                        
+                        <div class="relative">
+                            <input type="range" 
+                                   x-model.number="yearRange[0]" 
+                                   min="1950" 
+                                   max="2023" 
+                                   step="1"
+                                   class="absolute w-full h-2 opacity-0 cursor-pointer z-10">
+                            <input type="range" 
+                                   x-model.number="yearRange[1]" 
+                                   min="1950" 
+                                   max="2023" 
+                                   step="1"
+                                   class="absolute w-full h-2 opacity-0 cursor-pointer z-10">
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between text-sm text-neo-textDark">
+                        <span>1950</span>
+                        <span>2023</span>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 mb-8">
+                    <button @click="setYearPreset('classic')"
+                            :class="{'border-neo-tertiary': yearRange[0] === 1950 && yearRange[1] === 1980}"
+                            class="p-3 rounded-xl bg-neo-card/30 border border-white/5 hover:border-neo-tertiary/50 transition-all">
+                        <span class="font-medium">Classic Films</span>
+                        <p class="text-xs text-neo-textDark">1950-1980</p>
+                    </button>
+                    <button @click="setYearPreset('retro')"
+                            :class="{'border-neo-tertiary': yearRange[0] === 1980 && yearRange[1] === 2000}"
+                            class="p-3 rounded-xl bg-neo-card/30 border border-white/5 hover:border-neo-tertiary/50 transition-all">
+                        <span class="font-medium">Retro Films</span>
+                        <p class="text-xs text-neo-textDark">1980-2000</p>
+                    </button>
+                    <button @click="setYearPreset('modern')"
+                            :class="{'border-neo-tertiary': yearRange[0] === 2000 && yearRange[1] === 2015}"
+                            class="p-3 rounded-xl bg-neo-card/30 border border-white/5 hover:border-neo-tertiary/50 transition-all">
+                        <span class="font-medium">Modern Films</span>
+                        <p class="text-xs text-neo-textDark">2000-2015</p>
+                    </button>
+                    <button @click="setYearPreset('recent')"
+                            :class="{'border-neo-tertiary': yearRange[0] === 2015 && yearRange[1] === 2023}"
+                            class="p-3 rounded-xl bg-neo-card/30 border border-white/5 hover:border-neo-tertiary/50 transition-all">
+                        <span class="font-medium">Recent Films</span>
+                        <p class="text-xs text-neo-textDark">2015-2023</p>
+                    </button>
+                </div>
+
+                <div class="flex justify-between mt-8">
+                    <button @click="prevStep()" class="border border-white/10 text-white px-6 py-2 rounded-xl text-lg hover:border-white/30 transition-all">Back</button>
+                    <button @click="nextStep()" class="neo-button text-white px-8 py-3 rounded-xl text-lg font-medium">Continue</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Rating Threshold -->
+            <div x-show="currentStep === 3" class="wizard-step">
+                <h2 class="text-3xl font-bold mb-2 text-center bg-clip-text text-transparent bg-gradient-to-r from-neo-tertiary to-neo-highlight">How good should it be?</h2>
+                <p class="text-lg text-neo-textDark text-center mb-8">Set your minimum quality threshold</p>
+                
+                <div class="bg-neo-card/50 backdrop-blur-md rounded-2xl p-6 mb-12">
+                    <div class="flex items-center justify-center mb-2">
+                        <span x-text="ratingThreshold" class="text-4xl font-bold text-white mr-2"></span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-yellow-400">
+                            <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    
+                    <input type="range" 
+                           x-model.number="ratingThreshold" 
+                           min="1" 
+                           max="10" 
+                           step="0.5"
+                           class="w-full h-2 bg-neo-bg rounded-lg appearance-none cursor-pointer">
+                           
+                    <div class="flex justify-between text-xs text-neo-textDark mt-2">
+                        <span>Any Rating</span>
+                        <span>Must-See</span>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-4 gap-4 mb-8">
+                    <button @click="ratingThreshold = 6"
+                            :class="{'border-neo-tertiary': ratingThreshold === 6}"
+                            class="p-3 rounded-xl bg-neo-card/30 border border-white/5 hover:border-neo-tertiary/50 transition-all">
+                        <span class="font-medium">6+</span>
+                        <p class="text-xs text-neo-textDark">Good</p>
+                    </button>
+                    <button @click="ratingThreshold = 7"
+                            :class="{'border-neo-tertiary': ratingThreshold === 7}"
+                            class="p-3 rounded-xl bg-neo-card/30 border border-white/5 hover:border-neo-tertiary/50 transition-all">
+                        <span class="font-medium">7+</span>
+                        <p class="text-xs text-neo-textDark">Great</p>
+                    </button>
+                    <button @click="ratingThreshold = 8"
+                            :class="{'border-neo-tertiary': ratingThreshold === 8}"
+                            class="p-3 rounded-xl bg-neo-card/30 border border-white/5 hover:border-neo-tertiary/50 transition-all">
+                        <span class="font-medium">8+</span>
+                        <p class="text-xs text-neo-textDark">Excellent</p>
+                    </button>
+                    <button @click="ratingThreshold = 9"
+                            :class="{'border-neo-tertiary': ratingThreshold === 9}"
+                            class="p-3 rounded-xl bg-neo-card/30 border border-white/5 hover:border-neo-tertiary/50 transition-all">
+                        <span class="font-medium">9+</span>
+                        <p class="text-xs text-neo-textDark">Amazing</p>
+                    </button>
+                </div>
+
+                <div class="flex justify-between mt-8">
+                    <button @click="prevStep()" class="border border-white/10 text-white px-6 py-2 rounded-xl text-lg hover:border-white/30 transition-all">Back</button>
+                    <button @click="findMatches()" class="neo-button text-white px-8 py-3 rounded-xl text-lg font-medium">Find Matches</button>
+                </div>
+            </div>
+
+            <!-- Match Phase: Swipeable Cards -->
+            <div x-show="matchPhase" class="wizard-step flex flex-col items-center">
+                <h2 class="text-3xl font-bold mb-2 text-center bg-clip-text text-transparent bg-gradient-to-r from-neo-tertiary to-neo-highlight" x-show="!loading && movies.length > 0">Your Movie Matches</h2>
+                <p class="text-lg text-neo-textDark text-center mb-8" x-show="!loading && movies.length > 0">Swipe right to save, left to pass</p>
+                
+                <!-- Movie Cards Stack -->
+                <div x-show="!loading && movies.length > 0" class="relative w-full max-w-sm h-[70vh] max-h-[600px] overflow-visible">
+                    <template x-for="(movie, index) in movies.slice(currentMovieIndex, currentMovieIndex + 3).reverse()" :key="movie.id">
+                        <div x-show="!movie.swiped" 
+                             :style="`background-image: url(https://image.tmdb.org/t/p/w780${movie.backdrop_path || movie.poster_path}); z-index: ${100 - index}; transform: translateX(${movie.dragOffset || 0}px) rotate(${(movie.dragOffset || 0) / 10}deg) scale(${1 - (index * 0.05)}) translateY(${index * 8}px);`"
+                             :class="{'animate-swipe-right': movie.swipedRight, 'animate-swipe-left': movie.swipedLeft}"
+                             class="movie-card absolute top-0 left-0 right-0"
+                             @mousedown="startDrag($event, movie)"
+                             @mousemove="moveDrag($event, movie)"
+                             @mouseup="endDrag($event, movie)"
+                             @mouseleave="if(dragging) endDrag($event, movie)"
+                             @touchstart="startDrag($event, movie)"
+                             @touchmove="moveDrag($event, movie)"
+                             @touchend="endDrag($event, movie)">
+                            
+                            <!-- Movie Info -->
+                            <div class="movie-info">
+                                <div class="flex items-center mb-2">
+                                    <h3 class="text-2xl font-bold mr-2" x-text="movie.title"></h3>
+                                    <span class="text-sm bg-neo-bg/70 px-2 py-1 rounded-md">
+                                        <span x-text="movie.release_date?.substring(0, 4) || 'N/A'"></span>
+                                    </span>
+                                </div>
+                                
+                                <div class="flex items-center mb-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-yellow-400 mr-1">
+                                        <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="font-medium" x-text="movie.vote_average?.toFixed(1) || 'N/A'"></span>
+                                </div>
+                                
+                                <p class="text-sm text-neo-textDark line-clamp-3" x-text="movie.overview"></p>
+                                
+                                <!-- Genres -->
+                                <div class="flex flex-wrap gap-2 mt-3">
+                                    <template x-for="genreId in movie.genre_ids?.slice(0, 3) || []" :key="genreId">
+                                        <span class="text-xs px-2 py-1 rounded-full bg-neo-secondary/30 backdrop-blur-sm" 
+                                              x-text="getGenreName(genreId)"></span>
+                                    </template>
+                                </div>
+                            </div>
+                            
+                            <!-- Swipe Indicators -->
+                            <div class="absolute top-4 left-4 bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-lg transform -rotate-12 opacity-0 transition-opacity duration-200 font-bold" 
+                                 :class="{'opacity-80': movie.dragOffset < -50}">
+                                PASS
+                            </div>
+                            
+                            <div class="absolute top-4 right-4 bg-gradient-to-r from-neo-tertiary to-neo-highlight text-white px-4 py-2 rounded-lg transform rotate-12 opacity-0 transition-opacity duration-200 font-bold" 
+                                 :class="{'opacity-80': movie.dragOffset > 50}">
+                                SAVE
+                            </div>
+                        </div>
+                    </template>
+                </div>
+                
+                <!-- Swipe Buttons (only shown when there are cards) -->
+                <div class="swipe-buttons" x-show="!loading && movies.length > 0 && currentMovieIndex < movies.length">
+                    <button @click="swipeLeft()" class="swipe-btn dislike-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-white">
+                            <path d="M15.73 5.25h1.035A7.465 7.465 0 0118 9.375a7.465 7.465 0 01-1.235 4.125h-.148c-.806 0-1.534.446-2.031 1.08a9.04 9.04 0 01-2.861 2.4c-.723.384-1.35.956-1.653 1.715a4.498 4.498 0 00-.322 1.672V21a.75.75 0 01-.75.75 2.25 2.25 0 01-2.25-2.25c0-1.152.26-2.243.723-3.218C7.74 15.724 7.366 15 6.748 15H3.622c-1.026 0-1.945-.694-2.054-1.715A12.134 12.134 0 011.5 12c0-2.848.992-5.464 2.649-7.521.388-.482.987-.729 1.605-.729H9.77a4.5 4.5 0 011.423.23l3.114 1.04a4.5 4.5 0 001.423.23zM21.669 13.773c.536-1.362.831-2.845.831-4.398 0-1.22-.182-2.398-.52-3.507-.26-.85-1.084-1.368-1.973-1.368H19.1c-.445 0-.72.498-.523.898.591 1.2.924 2.55.924 3.977a8.959 8.959 0 01-1.302 4.666c-.245.403.028.959.5.959h1.053c.832 0 1.612-.453 1.918-1.227z" />
+                        </svg>
+                    </button>
+                    <button @click="swipeRight()" class="swipe-btn like-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-white">
+                            <path d="M7.493 18.75c-.425 0-.82-.236-.975-.632A7.48 7.48 0 016 15.375c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75 2.25 2.25 0 012.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23h-.777zM2.331 10.977a11.969 11.969 0 00-.831 4.398 12 12 0 00.52 3.507c.26.85 1.084 1.368 1.973 1.368H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 01-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227z" />
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- End of Cards / Saved Movies -->
+                <div x-show="!loading && currentMovieIndex >= movies.length" class="flex flex-col items-center mt-6">
+                    <h3 class="text-2xl font-bold mb-4 text-center" x-text="savedMovies.length > 0 ? 'Your Saved Movies' : 'No Movies Saved'"></h3>
+                    
+                    <div x-show="savedMovies.length === 0" class="text-center mb-8">
+                        <p class="text-neo-textDark mb-4">You didn't save any movies. Want to try again?</p>
+                        <button @click="resetWizard()" class="neo-button text-white px-8 py-3 rounded-xl text-lg font-medium">Start Over</button>
+                    </div>
+                    
+                    <div x-show="savedMovies.length > 0" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full mb-8">
+                        <template x-for="movie in savedMovies" :key="movie.id">
+                            <a :href="`watch.html?id=${movie.id}&type=movie`" class="relative rounded-xl overflow-hidden aspect-[2/3] group">
+                                <img :src="`https://image.tmdb.org/t/p/w342${movie.poster_path}`" 
+                                     :alt="movie.title"
+                                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-gradient-to-t from-neo-bg to-transparent opacity-80"></div>
+                                <div class="absolute bottom-0 left-0 w-full p-3">
+                                    <h4 class="font-bold" x-text="movie.title"></h4>
+                                    <div class="flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-yellow-400 mr-1">
+                                            <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span class="text-sm" x-text="movie.vote_average?.toFixed(1)"></span>
+                                    </div>
+                                </div>
+                            </a>
+                        </template>
+                    </div>
+                    
+                    <div class="flex space-x-4">
+                        <button @click="resetWizard()" class="border border-white/10 text-white px-6 py-2 rounded-xl hover:border-white/30 transition-all">Find More Movies</button>
+                        <a href="index.html" class="neo-button text-white px-6 py-2 rounded-xl font-medium">Explore All Movies</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- "Now it's movie time" Notification -->
+    <div x-show="showMovieTimeAlert" 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 transform scale-90"
+         x-transition:enter-end="opacity-100 transform scale-100"
+         x-transition:leave="transition ease-in duration-300"
+         x-transition:leave-start="opacity-100 transform scale-100"
+         x-transition:leave-end="opacity-0 transform scale-90"
+         class="fixed inset-0 flex items-center justify-center z-50">
+        <div class="absolute inset-0 bg-neo-bg/80 backdrop-blur-sm" @click="showMovieTimeAlert = false"></div>
+        <div class="movie-time-alert p-8 max-w-md relative z-10">
+            <!-- Star particles -->
+            <div class="absolute -top-20 -left-20 w-full h-full pointer-events-none">
+                <img src="assets/star.svg" class="w-16 h-16 absolute animate-float" style="animation-delay: 0s; left: 20%; top: 10%;">
+                <img src="assets/star.svg" class="w-12 h-12 absolute animate-float" style="animation-delay: 0.5s; left: 60%; top: 5%;">
+                <img src="assets/star.svg" class="w-10 h-10 absolute animate-float" style="animation-delay: 1s; left: 80%; top: 20%;">
+            </div>
+            
+            <h2 class="text-4xl font-bold text-white text-center mb-4">It's Movie Time!</h2>
+            <p class="text-white text-center mb-6">We've found some awesome picks based on your taste. Time to grab your popcorn!</p>
+            
+            <div class="flex justify-center gap-4">
+                <button @click="showMovieTimeAlert = false; showSimilarMoviesModal = true;" class="bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-xl transition-all">
+                    Similar Movies
+                </button>
+                <button @click="showMovieTimeAlert = false" class="neo-button text-white px-6 py-3 rounded-xl">
+                    Let's Go!
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading State with Star Particles -->
+    <div x-show="loading" class="flex flex-col justify-center items-center min-h-[50vh]">
+        <div class="mb-8 relative w-40 h-40">
+            <!-- Star particles animation -->
+            <div class="absolute inset-0 flex items-center justify-center">
+                <img src="assets/star.svg" class="w-32 h-32 absolute animate-spin-slow opacity-20">
+                <img src="assets/star.svg" class="w-24 h-24 absolute animate-spin-reverse opacity-40">
+                <img src="assets/star.svg" class="w-16 h-16 absolute animate-pulse">
+            </div>
+            
+            <!-- Loading text -->
+            <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full text-center">
+                <p class="text-lg text-neo-tertiary font-medium" x-text="loadingMessage"></p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-neo-textDark py-4 mt-auto border-t border-white/5">
+        <div class="container mx-auto px-6 text-center text-xs">
+            <p>&copy; Fastfilmy. All rights reserved. Using TMDB API.</p>
+        </div>
+    </footer>
+
+<script>
+    function wizardApp() {
+        return {
+            // API Key (same as index)
+            apiKey: '1070730380f5fee0d87cf0382670b255',
+            
+            // Wizard State
+            currentStep: 1,
+            totalSteps: 3,
+            matchPhase: false,
+            
+            // Modal States
+            showMovieTimeAlert: false,
+            showSimilarMoviesModal: false,
+            showPerfectMatchModal: false,
+            showNoMatchesModal: false,
+            activeTab: 'liked',
+            
+            // Wizard Phases
+            currentPhase: 'initial',
+            initialMovies: [],
+            refinementMovies: [],
+            finalMovies: [],
+            perfectMatch: null,
+            
+            // Movies Data
+            genres: [],
+            movies: [],
+            savedMovies: [],
+            similarMovies: [],
+            recommendedMovies: [],
+            currentMovieIndex: 0,
+            loading: false,
+            loadingGenres: true,
+            
+            // Loading State
+            loadingMessage: '',
+            loadingMessageIndex: 0,
+            loadingMessages: [
+                'Finding matches based on your taste...',
+                'Mixing your perfect movie bowl...',
+                'Adding a pinch of drama...',
+                'Stirring in some action...',
+                'Sprinkling special effects...',
+                'Taste-testing the results...'
+            ],
+            
+            // Selection Criteria
+            selectedGenres: [],
+            yearRange: [2000, 2023],
+            ratingThreshold: 7,
+            
+            // Touch/Mouse handling
+            dragging: false,
+            dragStartX: 0,
+            dragStartY: 0,
+            
+            // Computed property for current phase movies
+            get currentPhaseMovies() {
+                switch(this.currentPhase) {
+                    case 'initial': return this.initialMovies;
+                    case 'refinement': return this.refinementMovies;
+                    case 'final': return this.finalMovies;
+                    default: return [];
+                }
+            },
+            
+            // Initialize the app
+            async init() {
+                this.loadingMessage = this.loadingMessages[0];
+                await this.fetchGenres();
+                this.addIngredientsToBowl();
+            },
+            
+            // Fetches genres from TMDB API
+            async fetchGenres() {
+                this.loadingGenres = true;
+                const url = `https://api.themoviedb.org/3/genre/movie/list?api_key=${this.apiKey}`;
+                try {
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    this.genres = data.genres.filter(g => g.name !== 'TV Movie'); // Filter out TV Movie genre
+                } catch (error) {
+                    console.error('Error fetching genres:', error);
+                } finally {
+                    this.loadingGenres = false;
+                }
+            },
+            
+            // Creates dynamic ingredient elements for the cooking animation
+            addIngredientsToBowl() {
+                setTimeout(() => {
+                    if (!this.loading) return;
+                    
+                    const bowl = document.querySelector('.cooking-bowl');
+                    if (!bowl) return;
+                    
+                    const colors = ['#FF2E9F', '#6919E6', '#00F0C8', '#3B82F6', '#F0F4FA'];
+                    const ingredient = document.createElement('div');
+                    ingredient.className = 'ingredient';
+                    ingredient.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    ingredient.style.left = `${Math.random() * 140 + 20}px`;
+                    ingredient.style.top = `${Math.random() * 20 - 50}px`;
+                    ingredient.style.animationDelay = `${Math.random() * 0.5}s`;
+                    
+                    bowl.appendChild(ingredient);
+                    
+                    // Remove after animation
+                    setTimeout(() => {
+                        if (ingredient.parentNode === bowl) {
+                            bowl.removeChild(ingredient);
+                        }
+                    }, 3000);
+                    
+                    // Continue adding ingredients if still loading
+                    if (this.loading) {
+                        this.addIngredientsToBowl();
+                    }
+                }, Math.random() * 1000 + 500); // Random interval for natural effect
+            },
+            
+            // Cycles through loading messages
+            cycleLoadingMessages() {
+                this.loadingMessageIndex = (this.loadingMessageIndex + 1) % this.loadingMessages.length;
+                this.loadingMessage = this.loadingMessages[this.loadingMessageIndex];
+                
+                if (this.loading) {
+                    setTimeout(() => this.cycleLoadingMessages(), 2500);
+                }
+            },
+            
+            // Handler for toggling genre selection
+            toggleGenre(genreId) {
+                const index = this.selectedGenres.indexOf(genreId);
+                if (index === -1) {
+                    this.selectedGenres.push(genreId);
+                } else {
+                    this.selectedGenres.splice(index, 1);
+                }
+            },
+            
+            // Gets genre name from ID
+            getGenreName(genreId) {
+                const genre = this.genres.find(g => g.id === genreId);
+                return genre ? genre.name : '';
+            },
+            
+            // Sets year range based on presets
+            setYearPreset(preset) {
+                switch(preset) {
+                    case 'classic':
+                        this.yearRange = [1950, 1980];
+                        break;
+                    case 'retro':
+                        this.yearRange = [1980, 2000];
+                        break;
+                    case 'modern':
+                        this.yearRange = [2000, 2015];
+                        break;
+                    case 'recent':
+                        this.yearRange = [2015, 2023];
+                        break;
+                }
+            },
+            
+            // Navigation methods
+            nextStep() {
+                if (this.currentStep < this.totalSteps) {
+                    this.currentStep++;
+                }
+            },
+            
+            prevStep() {
+                if (this.currentStep > 1) {
+                    this.currentStep--;
+                }
+            },
+            
+            // Fetch movie matches based on criteria
+            async findMatches() {
+                this.matchPhase = true;
+                this.loading = true;
+                this.currentStep = this.totalSteps + 1;
+                this.loadingMessageIndex = 0;
+                this.loadingMessage = this.loadingMessages[0];
+                this.cycleLoadingMessages();
+                
+                // Reset all movie-related states
+                this.currentPhase = 'initial';
+                this.initialMovies = [];
+                this.refinementMovies = [];
+                this.finalMovies = [];
+                this.savedMovies = [];
+                this.currentMovieIndex = 0;
+                this.movies = [];
+                
+                try {
+                    // Shorter loading delay
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                    const genreParam = this.selectedGenres.length > 0 ? this.selectedGenres.join(',') : '';
+                    const yearStart = this.yearRange[0];
+                    const yearEnd = this.yearRange[1];
+                    
+                    // Adjust vote average threshold
+                    let voteAverage = this.ratingThreshold;
+                    if (voteAverage > 8) voteAverage = 8;
+                    
+                    let url = `https://api.themoviedb.org/3/discover/movie?api_key=${this.apiKey}&sort_by=popularity.desc&include_adult=false&include_video=false&with_genres=${genreParam}&primary_release_date.gte=${yearStart}-01-01&primary_release_date.lte=${yearEnd}-12-31&vote_average.gte=${voteAverage}&vote_count.gte=50&page=1`;
+                    
+                    let response = await fetch(url);
+                    let data = await response.json();
+                    
+                    if (data.results && data.results.length > 0) {
+                        const formattedMovies = data.results.map(movie => ({
+                            ...movie,
+                            dragOffset: 0,
+                            swiped: false,
+                            swipedRight: false,
+                            swipedLeft: false
+                        }));
+                        
+                        this.movies = formattedMovies;
+                        this.currentMovieIndex = 0;
+                        
+                        // Show movie time alert after loading
+                        this.loading = false;
+                        setTimeout(() => {
+                            this.showMovieTimeAlert = true;
+                        }, 300);
+                    } else {
+                        this.showNoMatchesModal = true;
+                        this.loading = false;
+                    }
+                } catch (error) {
+                    console.error('Error fetching movies:', error);
+                    this.showNoMatchesModal = true;
+                    this.loading = false;
+                }
+            },
+            
+            // Fetch similar movies based on the first saved movie
+            async fetchSimilarMovies() {
+                if (this.savedMovies.length === 0) return;
+                
+                try {
+                    const movieId = this.savedMovies[0].id;
+                    const url = `https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${this.apiKey}&language=en-US&page=1`;
+                    
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    
+                    if (data.results && data.results.length > 0) {
+                        this.similarMovies = data.results;
+                    }
+                } catch (error) {
+                    console.error('Error fetching similar movies:', error);
+                }
+            },
+            
+            // Fetch recommendations
+            async fetchRecommendations() {
+                if (this.savedMovies.length === 0) return;
+                
+                try {
+                    // Get movie IDs from saved movies, limited to 3
+                    const movieIds = this.savedMovies.slice(0, 3).map(movie => movie.id);
+                    
+                    // Create requests for each movie ID
+                    const requests = movieIds.map(id => 
+                        fetch(`https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${this.apiKey}&language=en-US&page=1`)
+                            .then(res => res.json())
+                    );
+                    
+                    // Wait for all requests to complete
+                    const results = await Promise.all(requests);
+                    
+                    // Combine and deduplicate results
+                    let allRecommendations = [];
+                    results.forEach(data => {
+                        if (data.results && data.results.length > 0) {
+                            allRecommendations = [...allRecommendations, ...data.results];
+                        }
+                    });
+                    
+                    // Deduplicate by ID
+                    const uniqueIds = new Set();
+                    this.recommendedMovies = allRecommendations.filter(movie => {
+                        if (uniqueIds.has(movie.id)) return false;
+                        uniqueIds.add(movie.id);
+                        return true;
+                    });
+                    
+                } catch (error) {
+                    console.error('Error fetching recommendations:', error);
+                }
+            },
+            
+            // Reset the wizard to start over
+            resetWizard() {
+                this.currentStep = 1;
+                this.matchPhase = false;
+                this.currentPhase = 'initial';
+                this.initialMovies = [];
+                this.refinementMovies = [];
+                this.finalMovies = [];
+                this.savedMovies = [];
+                this.currentMovieIndex = 0;
+                this.selectedGenres = [];
+                this.yearRange = [2000, 2023];
+                this.ratingThreshold = 7;
+                this.showMovieTimeAlert = false;
+                this.showSimilarMoviesModal = false;
+                this.showPerfectMatchModal = false;
+                this.showNoMatchesModal = false;
+                this.perfectMatch = null;
+            },
+            
+            // Touch/Mouse handling for card swiping
+            startDrag(event, movie) {
+                if (movie.swiped) return;
+                
+                this.dragging = true;
+                
+                // Get starting position
+                if (event.type.includes('mouse')) {
+                    this.dragStartX = event.clientX;
+                    this.dragStartY = event.clientY;
+                } else {
+                    this.dragStartX = event.touches[0].clientX;
+                    this.dragStartY = event.touches[0].clientY;
+                }
+                
+                // Reset any existing drag
+                movie.dragOffset = 0;
+                
+                // Prevent default behavior
+                event.preventDefault();
+            },
+            
+            moveDrag(event, movie) {
+                if (!this.dragging || movie.swiped) return;
+                
+                let currentX;
+                if (event.type.includes('mouse')) {
+                    currentX = event.clientX;
+                } else {
+                    currentX = event.touches[0].clientX;
+                }
+                
+                // Calculate horizontal offset
+                const offset = currentX - this.dragStartX;
+                movie.dragOffset = offset;
+                
+                // Apply transformation
+                const card = event.currentTarget;
+                const rotation = offset / 10;
+                card.style.transform = `translateX(${offset}px) rotate(${rotation}deg)`;
+                
+                // Prevent default behavior
+                event.preventDefault();
+            },
+            
+            endDrag(event, movie) {
+                if (!this.dragging || movie.swiped) return;
+                
+                this.dragging = false;
+                
+                // Check if the drag was decisive
+                if (movie.dragOffset > 100) {
+                    this.handleSwipeRight(movie);
+                } else if (movie.dragOffset < -100) {
+                    this.handleSwipeLeft(movie);
+                } else {
+                    // Reset card position if not a decisive swipe
+                    const card = event.currentTarget;
+                    card.style.transform = '';
+                    movie.dragOffset = 0;
+                }
+                
+                // Prevent default behavior
+                event.preventDefault();
+            },
+            
+            // Swipe buttons handlers
+            swipeLeft() {
+                if (this.currentMovieIndex < this.movies.length) {
+                    const movie = this.movies[this.currentMovieIndex];
+                    this.handleSwipeLeft(movie);
+                }
+            },
+            
+            swipeRight() {
+                if (this.currentMovieIndex < this.movies.length) {
+                    const movie = this.movies[this.currentMovieIndex];
+                    this.handleSwipeRight(movie);
+                }
+            },
+            
+            // Swipe action handlers
+            handleSwipeLeft(movie) {
+                movie.swipedLeft = true;
+                movie.swiped = true;
+                
+                setTimeout(() => {
+                    this.currentMovieIndex++;
+                    this.checkPhaseProgress();
+                }, 300);
+            },
+            
+            handleSwipeRight(movie) {
+                movie.swipedRight = true;
+                movie.swiped = true;
+                
+                // Add to saved list
+                this.savedMovies.push(movie);
+                
+                // Wait for animation to complete
+                setTimeout(() => {
+                    this.currentMovieIndex++;
+                    this.checkPhaseProgress();
+                }, 300);
+            },
+
+            // New method to check phase progress
+            checkPhaseProgress() {
+                if (this.movies.length === 0) {
+                    this.showNoMatchesModal = true;
+                    return;
+                }
+
+                switch(this.currentPhase) {
+                    case 'initial':
+                        // After swiping all initial cards
+                        if (this.currentMovieIndex >= this.movies.length) {
+                            if (this.savedMovies.length > 0) {
+                                // Move to refinement phase with saved movies
+                                this.currentPhase = 'refinement';
+                                this.currentMovieIndex = 0;
+                                this.refinementMovies = [...this.savedMovies].map(movie => ({
+                                    ...movie,
+                                    dragOffset: 0,
+                                    swiped: false,
+                                    swipedRight: false,
+                                    swipedLeft: false
+                                }));
+                                this.savedMovies = []; // Reset for next phase
+                            } else {
+                                // No movies saved, show reset option
+                                this.showNoMatchesModal = true;
+                            }
+                        }
+                        break;
+
+                    case 'refinement':
+                        // After refinement phase
+                        if (this.currentMovieIndex >= this.refinementMovies.length) {
+                            if (this.savedMovies.length >= 2) {
+                                // Move to final phase with top 2 saved movies
+                                this.currentPhase = 'final';
+                                this.currentMovieIndex = 0;
+                                this.finalMovies = this.savedMovies.slice(0, 2).map(movie => ({
+                                    ...movie,
+                                    dragOffset: 0,
+                                    swiped: false,
+                                    swipedRight: false,
+                                    swipedLeft: false
+                                }));
+                                this.savedMovies = []; // Reset for final phase
+                            } else if (this.savedMovies.length === 1) {
+                                // Only one movie saved, it's the perfect match
+                                this.perfectMatch = this.savedMovies[0];
+                                this.showPerfectMatchModal = true;
+                            } else {
+                                // No movies saved in refinement, show reset
+                                this.showNoMatchesModal = true;
+                            }
+                        }
+                        break;
+
+                    case 'final':
+                        // After final phase
+                        if (this.currentMovieIndex >= this.finalMovies.length) {
+                            if (this.savedMovies.length > 0) {
+                                // Show the perfect match
+                                this.perfectMatch = this.savedMovies[0];
+                                this.showPerfectMatchModal = true;
+                            } else {
+                                // No final selection, show reset
+                                this.showNoMatchesModal = true;
+                            }
+                        }
+                        break;
+                }
+            },
+
+            // Modified fetchMoreMovies to handle pagination better
+            async fetchMoreMovies(page) {
+                if (page > 5) return; // Limit to 5 pages to avoid rate limiting
+
+                try {
+                    const genreParam = this.selectedGenres.length > 0 ? this.selectedGenres.join(',') : '';
+                    const yearStart = this.yearRange[0];
+                    const yearEnd = this.yearRange[1];
+                    const voteAverage = this.ratingThreshold;
+
+                    const url = `https://api.themoviedb.org/3/discover/movie?api_key=${this.apiKey}&sort_by=popularity.desc&include_adult=false&include_video=false&with_genres=${genreParam}&primary_release_date.gte=${yearStart}-01-01&primary_release_date.lte=${yearEnd}-12-31&vote_average.gte=${voteAverage}&vote_count.gte=50&page=${page}`;
+                    
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    
+                    if (data.results && data.results.length > 0) {
+                        // Add new movies to the stack
+                        const newMovies = data.results.map(movie => ({
+                            ...movie,
+                            dragOffset: 0,
+                            swiped: false,
+                            swipedRight: false,
+                            swipedLeft: false
+                        }));
+
+                        // Filter out any movies we already have
+                        const uniqueNewMovies = newMovies.filter(newMovie => 
+                            !this.movies.some(existingMovie => existingMovie.id === newMovie.id)
+                        );
+
+                        this.movies = [...this.movies, ...uniqueNewMovies];
+                    }
+                } catch (error) {
+                    console.error('Error fetching more movies:', error);
+                }
+            }
+        };
+    }
+</script>
+
+</body>
+</html>

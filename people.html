@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>People - Fastfilmy</title>
+    <meta content="Fastfilmy" property="og:title"/>
+    <meta name="keywords" content="actors, actresses, celebrities, movie stars, tv stars, filmography, cast, crew, fastfilmy">
+    <meta content="Discover detailed information about your favorite actors, actresses, and filmmakers on Fastfilmy." property="og:description"/>
+    <meta content="https://fastfilmy.top" property="og:url"/>
+    <meta content="logo.png" property="og:image"/>
+    <meta content="#09091C" data-react-helmet="true" name="theme-color"/>
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://fastfilmy.top">
+    <meta property="twitter:title" content="People - Fastfilmy">
+    <meta property="twitter:description" content="Discover detailed information about your favorite actors, actresses, and filmmakers on Fastfilmy.">
+    <meta property="twitter:image" content="logo.png">
+    <link rel="icon" type="image/x-icon" href="logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.10.3/cdn.min.js" defer></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        neo: {
+                            bg: '#09091C',
+                            card: '#12123B',
+                            accent: '#FF2E9F',
+                            secondary: '#6919E6',
+                            tertiary: '#00F0C8',
+                            highlight: '#3B82F6',
+                            text: '#F0F4FA',
+                            textDark: '#94A3B8',
+                        }
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 10s ease infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'shimmer': 'shimmer 2.5s linear infinite',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-position': '0% 50%'
+                            },
+                            '50%': {
+                                'background-position': '100% 50%'
+                            },
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        'shimmer': {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' },
+                        }
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Base styles */
+        :root {
+            --neo-bg: #09091C;
+            --neo-card: #12123B;
+            --neo-accent: #FF2E9F;
+            --neo-secondary: #6919E6;
+            --neo-tertiary: #00F0C8;
+            --neo-highlight: #3B82F6;
+            --neo-text: #F0F4FA;
+            --neo-text-dark: #94A3B8;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--neo-bg);
+            color: var(--neo-text);
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 20% 35%, rgba(105, 25, 230, 0.15) 0%, transparent 30%),
+                radial-gradient(circle at 85% 20%, rgba(0, 240, 200, 0.15) 0%, transparent 30%),
+                radial-gradient(circle at 10% 85%, rgba(255, 46, 159, 0.15) 0%, transparent 30%);
+            background-attachment: fixed;
+        }
+
+        /* Container */
+        .container {
+            width: 100%;
+            margin-right: auto;
+            margin-left: auto;
+            padding-right: 1rem;
+            padding-left: 1rem;
+        }
+
+        @media (min-width: 640px) { .container { max-width: 640px; } }
+        @media (min-width: 768px) { .container { max-width: 768px; } }
+        @media (min-width: 1024px) { .container { max-width: 1024px; } }
+        @media (min-width: 1280px) { .container { max-width: 1280px; } }
+
+        /* Navigation styles */
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 0.5rem 0;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(90deg, var(--neo-accent), var(--neo-secondary));
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--neo-tertiary);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Glass effect */
+        .glass-effect {
+            background: rgba(9, 9, 28, 0.7);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Enhanced card hover effects */
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            background: rgba(18, 18, 59, 0.7);
+            backdrop-filter: blur(16px);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -20px rgba(255, 46, 159, 0.3),
+                        0 0 15px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Golden featured movie card */
+        .featured-movie {
+            position: relative;
+            border: 2px solid transparent;
+            background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
+            background-size: 200% 200%;
+            animation: gradient-shift 3s ease infinite;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .featured-movie::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
+            background-size: 200% 200%;
+            animation: gradient-shift 3s ease infinite;
+            z-index: -1;
+            filter: blur(10px);
+            opacity: 0.5;
+        }
+
+        .featured-movie:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3),
+                        0 0 60px rgba(255, 215, 0, 0.2);
+        }
+
+        .featured-movie .star-icon {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 50px;
+            height: 50px;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+            animation: star-rotate 10s linear infinite;
+            z-index: 10;
+        }
+
+        /* Modern section styling */
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--neo-accent), var(--neo-tertiary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--neo-accent), var(--neo-tertiary));
+            border-radius: 2px;
+        }
+
+        /* Enhanced animations */
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes star-rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Modern tabs */
+        .tab-button {
+            position: relative;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            background: rgba(18, 18, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(45deg, var(--neo-accent), var(--neo-secondary));
+            border-color: transparent;
+        }
+
+        .tab-button:hover:not(.active) {
+            background: rgba(105, 25, 230, 0.2);
+            border-color: var(--neo-accent);
+        }
+
+        /* Modern grid layout */
+        .credits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        /* Enhanced text styling */
+        .movie-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            line-height: 1.4;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #fff, #e0e0e0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .movie-info {
+            font-size: 0.9rem;
+            color: var(--neo-text-dark);
+            line-height: 1.6;
+        }
+
+        /* Button styles */
+        .neo-button {
+            background: linear-gradient(90deg, var(--neo-accent), var(--neo-secondary));
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .neo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -6px rgba(255, 46, 159, 0.6);
+        }
+
+        /* Grid system */
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        @media (min-width: 640px) { .sm\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+        @media (min-width: 768px) { .md\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+        @media (min-width: 1024px) { .lg\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+        @media (min-width: 1280px) { .xl\:grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+
+        /* Utility classes */
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .space-x-4 > * + * { margin-left: 1rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mt-12 { margin-top: 3rem; }
+        .p-4 { padding: 1rem; }
+        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+
+        /* Card overlay */
+        .card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to top,
+                rgba(0, 0, 0, 0.95) 0%,
+                rgba(0, 0, 0, 0.8) 40%,
+                rgba(0, 0, 0, 0.2) 100%
+            );
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 1rem;
+        }
+
+        .card-hover:hover .card-overlay {
+            opacity: 1;
+        }
+
+        /* Text utilities */
+        .text-neo-text { color: var(--neo-text); }
+        .text-neo-text-dark { color: var(--neo-text-dark); }
+        .text-neo-accent { color: var(--neo-accent); }
+        .text-neo-tertiary { color: var(--neo-tertiary); }
+
+        /* Hide scrollbar */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        [x-cloak] { display: none !important; }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Line clamp */
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Popular grid layout */
+        .popular-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        /* Featured person/movie card */
+        .featured-card {
+            position: relative;
+            border: 2px solid transparent;
+            background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
+            background-size: 200% 200%;
+            animation: gradient-shift 3s ease infinite;
+            border-radius: 20px;
+            overflow: hidden;
+            grid-column: span 2;
+            grid-row: span 2;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .featured-card::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
+            background-size: 200% 200%;
+            animation: gradient-shift 3s ease infinite;
+            z-index: -1;
+            filter: blur(10px);
+            opacity: 0.5;
+        }
+
+        .featured-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .featured-badge:hover {
+            background: rgba(0, 0, 0, 0.9);
+            border-color: rgba(255, 215, 0, 0.6);
+        }
+
+        .featured-badge .star-icon {
+            width: 20px;
+            height: 20px;
+            filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
+        }
+
+        .featured-badge .tooltip {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(8px);
+            background: rgba(0, 0, 0, 0.9);
+            color: #FFD700;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .featured-badge:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(4px);
+        }
+
+        .featured-card .card-overlay {
+            background: linear-gradient(
+                to top,
+                rgba(0, 0, 0, 0.95) 0%,
+                rgba(0, 0, 0, 0.8) 40%,
+                rgba(0, 0, 0, 0.2) 100%
+            );
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .featured-card:hover .card-overlay {
+            opacity: 1;
+        }
+
+        @media (max-width: 640px) {
+            .featured-card {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+        }
+
+        /* Modernized filmography grid layout */
+        .filmography-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem 0;
+        }
+
+        .filmography-card {
+            position: relative;
+            background: rgba(18, 18, 59, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .filmography-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px -10px rgba(255, 46, 159, 0.4),
+                        0 0 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .filmography-card .card-overlay {
+            background: linear-gradient(
+                to top,
+                rgba(0, 0, 0, 0.9) 0%,
+                rgba(0, 0, 0, 0.6) 50%,
+                rgba(0, 0, 0, 0.2) 100%
+            );
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .filmography-card:hover .card-overlay {
+            opacity: 1;
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-8px);
+            background: rgba(0, 0, 0, 0.85);
+            color: var(--neo-text);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            pointer-events: none;
+        }
+
+        .filmography-card:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(-4px);
+        }
+
+        .movie-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--neo-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .movie-info {
+            font-size: 0.9rem;
+            color: var(--neo-text-dark);
+        }
+
+        .movie-info-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 9999px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .movie-info-badge:hover {
+            border-color: var(--neo-accent);
+            transform: translateY(-2px);
+        }
+
+        /* Add loading indicator styles */
+        .loading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(to right, var(--neo-accent), var(--neo-tertiary));
+            transform-origin: 0 50%;
+            z-index: 1000;
+        }
+
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+            text-align: center;
+            background: rgba(18, 18, 59, 0.7);
+            backdrop-filter: blur(16px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--neo-accent);
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: var(--neo-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .loading-subtext {
+            color: var(--neo-text-dark);
+            font-size: 0.875rem;
+        }
+
+        .retry-button {
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: var(--neo-accent);
+            color: white;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .retry-button:hover {
+            background: var(--neo-secondary);
+            transform: translateY(-2px);
+        }
+
+        /* Featured card styles (re-added for filmography) */
+        .featured-credit {
+            position: relative;
+            border: 2px solid transparent;
+            background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
+            background-size: 200% 200%;
+            animation: gradient-shift 3s ease infinite;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 5; /* Ensure it's visually distinct */
+        }
+
+        .featured-credit::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
+            background-size: 200% 200%;
+            animation: gradient-shift 3s ease infinite;
+            z-index: -1;
+            filter: blur(8px);
+            opacity: 0.6;
+        }
+
+        .featured-credit:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .featured-badge .star-icon {
+            width: 20px;
+            height: 20px;
+            filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
+        }
+
+        .featured-badge .tooltip {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(8px);
+            background: rgba(0, 0, 0, 0.9);
+            color: #FFD700;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            pointer-events: none;
+        }
+
+        .featured-badge:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(4px);
+        }
+
+        .featured-credit .card-overlay {
+            background: linear-gradient(
+                to top,
+                rgba(0, 0, 0, 0.95) 0%,
+                rgba(0, 0, 0, 0.8) 40%,
+                rgba(0, 0, 0, 0.2) 100%
+            );
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .featured-credit:hover .card-overlay {
+            opacity: 1;
+        }
+
+        /* Adjust regular card hover to prevent overlap issues */
+        .filmography-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px -10px rgba(255, 46, 159, 0.4),
+                        0 0 20px rgba(59, 130, 246, 0.3);
+            z-index: 6; /* Ensure hovered card is above others */
+        }
+
+        /* --- Modern Person Profile Styling --- */
+
+        .profile-card {
+            background: rgba(18, 18, 59, 0.85);
+            backdrop-filter: blur(25px);
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            padding: 2.5rem;
+            margin-top: -10vh; /* Overlap with backdrop */
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+            animation: profile-fade-in 0.8s ease-out;
+        }
+
+        @keyframes profile-fade-in {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .profile-image-wrapper {
+                max-width: 200px;
+                margin: 0 auto;
+            }
+        }
+
+        .profile-image {
+            border-radius: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.03);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .profile-name {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            background: linear-gradient(to right, var(--neo-text), #bbb);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--neo-text-dark);
+            font-size: 0.95rem;
+            position: relative; /* For tooltip positioning */
+        }
+
+        .info-item svg {
+            width: 1.25rem;
+            height: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .info-item .tooltip {
+            bottom: 120%; /* Position tooltip above icon */
+            transform: translateX(-50%) translateY(0);
+            transition: all 0.2s ease;
+        }
+
+        .info-item:hover .tooltip {
+            transform: translateX(-50%) translateY(-4px);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .biography-section {
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
+            padding-top: 2rem;
+        }
+
+        .biography-text {
+            color: var(--neo-text-dark);
+            line-height: 1.7;
+            max-height: 150px; /* Limit initial height */
+            overflow: hidden;
+            position: relative;
+            transition: max-height 0.5s ease-in-out;
+        }
+
+        .biography-text.expanded {
+            max-height: 1000px; /* Allow expansion */
+        }
+
+        .biography-text::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: linear-gradient(to top, rgba(18, 18, 59, 1), transparent);
+            pointer-events: none;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .biography-text.expanded::after {
+            opacity: 0;
+        }
+
+        .read-more-btn {
+            color: var(--neo-accent);
+            background: none;
+            border: none;
+            padding: 0;
+            margin-top: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .read-more-btn:hover {
+            color: var(--neo-tertiary);
+        }
+
+        /* --- Featured Title Styling (within Profile) --- */
+        .featured-title-section {
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
+            padding-top: 2rem;
+        }
+
+        .featured-title-card {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid transparent;
+            background: linear-gradient(rgba(18, 18, 59, 0.8), rgba(18, 18, 59, 0.9)),
+                        linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
+            background-origin: border-box;
+            background-clip: content-box, border-box;
+            background-size: auto, 200% 200%;
+            animation: gradient-shift 4s ease infinite alternate;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .featured-title-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+        }
+
+        .featured-title-icon {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
+        }
+
+        .featured-title-info h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #FFD700; /* Golden text */
+            margin-bottom: 0.25rem;
+        }
+
+        .featured-title-info p {
+            font-size: 0.9rem;
+            color: #f0e68c; /* Lighter gold/yellow */
+        }
+    </style>
+</head>
+<body class="text-neo-text min-h-screen" x-data="app()" x-cloak>
+    <div x-show="localStorage.getItem('showParticles') !== 'false'" id="particles-js" class="fixed inset-0 pointer-events-none z-0"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-effect">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4 md:space-x-8">
+                    <button @click="sidebarOpen = true" class="text-neo-textDark hover:text-neo-tertiary transition-colors duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                    <div class="flex items-center space-x-3">
+                        <div class="h-11 w-11 bg-gradient-to-br from-neo-accent via-neo-secondary to-neo-tertiary rounded-2xl flex items-center justify-center shadow-lg shadow-neo-secondary/20">
+                            <img src="logo.png" alt="Fastfilmy Logo" class="h-7 w-7 animate-float">
+                        </div>
+                        <span class="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-neo-accent via-neo-tertiary to-neo-highlight">Fastfilmy</span>
+                    </div>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="/" class="nav-link">Browse</a>
+                        <a href="livesports.html" class="nav-link">Live Sports</a>
+                        <button @click="showWatchLater = true" class="nav-link flex items-center space-x-2">
+                            <span>Watch Later</span>
+                            <span x-show="watchLaterItems?.length > 0" 
+                                  class="bg-neo-accent text-white text-xs flex items-center justify-center rounded-full w-6 h-6" 
+                                  x-text="watchLaterItems?.length || 0"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <div class="search-container hidden md:block">
+                            <input type="text" 
+                                   x-ref="searchInput"
+                                   x-model="searchQuery" 
+                                   @keyup.debounce.300ms="searchPeople()"
+                                   @focus="showSearchResults = true"
+                                   placeholder="Search people..." 
+                                   class="search-input bg-neo-card rounded-full px-6 py-2 focus:outline-none focus:ring-2 focus:ring-neo-accent w-64">
+                        </div>
+                    </div>
+                    <a href="settings.html" class="text-neo-textDark hover:text-neo-tertiary transition-colors duration-300" title="Settings">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transition-transform duration-500 hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <div class="pt-24">
+        <!-- Loading Progress Bar -->
+        <div x-show="loading" 
+             class="loading-progress"
+             :style="'transform: scaleX(' + (loadingProgress / 100) + ')'">
+        </div>
+
+        <!-- Content sections -->
+        <div class="container mx-auto px-6" x-show="!person && !error">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+                <h2 class="section-title">Popular People</h2>
+                
+                <!-- Sort options -->
+                <div class="flex items-center space-x-4 mt-4 md:mt-0">
+                    <select x-model="sortBy" 
+                            @change="sortPeople()"
+                            class="bg-neo-card text-neo-text rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-neo-accent border border-white/5">
+                        <option value="popularity">Most Popular</option>
+                        <option value="name">Name</option>
+                        <option value="trending">Trending</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- People Grid -->
+            <div class="popular-grid">
+                <template x-for="(person, index) in popularPeople" :key="person.id">
+                    <div :class="{'featured-card': index === 0, 'card-hover': index !== 0}">
+                        <template x-if="index === 0">
+                            <div class="featured-badge">
+                                <img src="assets/star.svg" alt="Featured" class="star-icon">
+                                <span class="text-yellow-400 font-medium">Featured</span>
+                                <div class="tooltip">Most Popular Person</div>
+                            </div>
+                        </template>
+                        <a :href="'people.html?id=' + person.id" class="block rounded-xl overflow-hidden aspect-[2/3]">
+                            <div class="relative h-full">
+                                <img :src="person.profile_path ? 'https://image.tmdb.org/t/p/w500' + person.profile_path : 'logo.png'"
+                                     :alt="person.name"
+                                     class="w-full h-full object-cover"
+                                     @error="$event.target.src = 'logo.png'">
+                                <div class="card-overlay">
+                                    <div class="p-4">
+                                        <h3 class="movie-title" x-text="person.name"></h3>
+                                        <div class="flex items-center text-xs md:text-sm text-neo-textDark mt-1">
+                                            <span x-text="person.known_for_department"></span>
+                                            <span class="mx-2">•</span>
+                                            <div class="flex items-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-400 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.922-.755 1.688-1.538 1.118l-2.8-2.034a1 1 0 00-1.176 0l-2.8 2.034c-.783.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                </svg>
+                                                <span x-text="person.popularity.toFixed(1)"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Load More Button -->
+            <div class="flex justify-center mt-12">
+                <button @click="loadMorePeople()" 
+                        class="neo-button text-white px-8 py-4 rounded-xl inline-flex items-center space-x-3 transform hover:scale-105 transition-all duration-300 shadow-xl"
+                        :disabled="loading">
+                    <template x-if="!loading">
+                        <span class="text-lg">Load More</span>
+                    </template>
+                    <template x-if="loading">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-5 h-5 border-t-2 border-b-2 border-white rounded-full animate-spin"></div>
+                            <span>Loading...</span>
+                        </div>
+                    </template>
+                </button>
+            </div>
+        </div>
+
+        <!-- Person Details Section -->
+        <div class="container mx-auto px-6" x-show="person" x-cloak>
+            <!-- Backdrop -->
+            <div class="absolute inset-x-0 top-0 h-[50vh] overflow-hidden -z-10">
+                <div class="absolute inset-0 bg-gradient-to-b from-neo-bg/20 via-neo-bg/70 to-neo-bg"></div>
+                <template x-if="person?.profile_path">
+                    <img :src="'https://image.tmdb.org/t/p/original' + person.profile_path"
+                         class="w-full h-full object-cover blur-md scale-110 opacity-30"
+                         :alt="person?.name || 'Profile Background'">
+                </template>
+            </div>
+
+            <div class="profile-card">
+                <div class="profile-grid">
+                    <!-- Profile Image -->
+                    <div class="profile-image-wrapper">
+                        <div class="aspect-[2/3] rounded-xl overflow-hidden">
+                            <template x-if="person?.profile_path">
+                                <img :src="'https://image.tmdb.org/t/p/w500' + person.profile_path"
+                                     class="w-full h-full object-cover profile-image"
+                                     :alt="person?.name || 'Profile Image'">
+                            </template>
+                            <template x-if="!person?.profile_path">
+                                <div class="w-full h-full bg-neo-card/50 flex items-center justify-center rounded-xl border border-white/10">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-neo-text-dark opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Info Column -->
+                    <div class="flex flex-col">
+                        <h1 class="profile-name" x-text="person?.name || 'Loading...'"></h1>
+                        
+                        <div class="flex flex-wrap gap-x-6 gap-y-3 text-neo-text-dark mb-6">
+                            <div class="info-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="text-neo-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                                <span x-text="person?.known_for_department || 'N/A'"></span>
+                                <div class="tooltip">Known For</div>
+                            </div>
+                            <template x-if="person?.birthday">
+                                <div class="info-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="text-neo-tertiary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                    <span x-text="formatDate(person.birthday) + (person.deathday ? ' - ' + formatDate(person.deathday) : '')"></span>
+                                     <div class="tooltip" x-text="person.deathday ? 'Born - Died' : 'Born'"></div>
+                                </div>
+                            </template>
+                            <template x-if="person?.place_of_birth">
+                                <div class="info-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="text-neo-highlight" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                                    <span x-text="person.place_of_birth"></span>
+                                    <div class="tooltip">Place of Birth</div>
+                                </div>
+                            </template>
+                        </div>
+
+                        <!-- Featured Title Section -->
+                        <template x-if="getMostPopularMovie()">
+                            <div class="featured-title-section">
+                                <h3 class="text-lg font-semibold mb-3 text-neo-tertiary">Most Popular Title</h3>
+                                <a :href="'watch.html?id=' + getMostPopularMovie().id + '&type=' + getMostPopularMovie().media_type" class="featured-title-card group">
+                                    <img src="assets/star.svg" alt="Star" class="featured-title-icon transform group-hover:scale-110 transition-transform duration-300">
+                                    <div class="featured-title-info">
+                                        <h4 x-text="getMostPopularMovie().title || getMostPopularMovie().name"></h4>
+                                        <p x-text="(getMostPopularMovie().media_type === 'tv' ? 'TV Show' : 'Movie') + ' • ' + formatYear(getMostPopularMovie().release_date || getMostPopularMovie().first_air_date)"></p>
+                                    </div>
+                                </a>
+                            </div>
+                        </template>
+
+                        <!-- Biography Section -->
+                        <template x-if="person?.biography">
+                            <div class="biography-section" x-data="{ expanded: false }">
+                                <h2 class="text-xl font-semibold mb-3">Biography</h2>
+                                <div class="biography-text" :class="{ 'expanded': expanded }">
+                                    <p x-text="person.biography"></p>
+                                </div>
+                                <button @click="expanded = !expanded" class="read-more-btn" x-text="expanded ? 'Read Less' : 'Read More'"></button>
+                            </div>
+                        </template>
+
+                         <!-- Also Known As Section -->
+                         <div x-show="person?.also_known_as?.length > 0" class="mt-8">
+                            <h2 class="text-xl font-semibold mb-3">Also Known As</h2>
+                            <div class="flex flex-wrap gap-2">
+                                <template x-for="name in person?.also_known_as || []" :key="name">
+                                    <span class="px-3 py-1 bg-neo-card/50 rounded-full text-sm text-neo-textDark border border-white/10" x-text="name"></span>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filmography -->
+        <div class="mt-12">
+            <h2 class="section-title mb-8">Filmography</h2>
+            
+            <!-- Filters -->
+            <div class="flex flex-wrap gap-4 mb-8">
+                <button @click="currentTab = 'all'"
+                        :class="currentTab === 'all' ? 'active' : ''"
+                        class="tab-button">
+                    All
+                </button>
+                <button @click="currentTab = 'movies'"
+                        :class="currentTab === 'movies' ? 'active' : ''"
+                        class="tab-button">
+                    Movies
+                </button>
+                <button @click="currentTab = 'tv'"
+                        :class="currentTab === 'tv' ? 'active' : ''"
+                        class="tab-button">
+                    TV Shows
+                </button>
+            </div>
+
+            <!-- Credits Grid with Infinite Scrolling -->
+            <div class="filmography-grid" x-intersect.threshold.50="loadMoreCredits">
+                <template x-for="(credit, index) in visibleCredits" :key="credit.id">
+                    <div :class="{'filmography-card': true, 'featured-credit': index === 0 && currentCreditPage === 1 && currentTab === 'all'}">
+                        <!-- Apply featured badge only to the absolute first item when 'All' tab is selected -->
+                        <template x-if="index === 0 && currentCreditPage === 1 && currentTab === 'all'">
+                            <div class="featured-badge">
+                                <img src="assets/star.svg" alt="Featured" class="star-icon">
+                                <span class="text-yellow-400 font-medium">Most Popular</span>
+                            </div>
+                        </template>
+                        <a :href="'watch.html?id=' + credit.id + '&type=' + credit.media_type"
+                           class="block rounded-xl overflow-hidden aspect-[2/3]">
+                            <div class="relative h-full">
+                                <img :src="credit.poster_path ? 'https://image.tmdb.org/t/p/w500' + credit.poster_path : 'logo.png'"
+                                     :alt="credit.title || credit.name"
+                                     class="w-full h-full object-cover"
+                                     @error="$event.target.src = 'logo.png'">
+                                <div class="card-overlay absolute inset-0 flex flex-col justify-end">
+                                    <div class="p-4">
+                                        <h3 class="movie-title" x-text="credit.title || credit.name"></h3>
+                                        <p class="movie-info" x-text="credit.character || credit.job || 'N/A'"></p>
+                                        <div class="movie-stats mt-2 flex items-center gap-2 flex-wrap">
+                                            <div class="movie-info-badge">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.922-.755 1.688-1.538 1.118l-2.8-2.034a1 1 0 00-1.176 0l-2.8 2.034c-.783.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                </svg>
+                                                <span x-text="credit.vote_average?.toFixed(1) || 'N/A'"></span>
+                                            </div>
+                                            <div class="movie-info-badge">
+                                                <span x-text="formatYear(credit.release_date || credit.first_air_date)"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div x-show="loading" class="container mx-auto px-6 py-12">
+            <div class="loading-container">
+                <div class="loading-spinner"></div>
+                <h3 class="loading-text" x-text="loadingText"></h3>
+                <p class="loading-subtext" x-text="loadingSubtext"></p>
+                <template x-if="loadingError">
+                    <div class="mt-4 text-red-500" x-text="loadingError"></div>
+                </template>
+                <template x-if="retryAvailable">
+                    <button @click="retryLoading" class="retry-button">
+                        Retry Loading
+                    </button>
+                </template>
+            </div>
+        </div>
+
+        <!-- Error State -->
+        <div x-show="error" class="container mx-auto px-6 py-12 text-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-red-500 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h2 class="text-xl font-bold mb-2">Error Loading Data</h2>
+            <p class="text-neo-textDark" x-text="error"></p>
+        </div>
+    </div>
+
+    <!-- particles.js -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: '#FF2E9F'
+                },
+                shape: {
+                    type: 'circle'
+                },
+                opacity: {
+                    value: 0.2,
+                    random: true,
+                    animation: {
+                        enable: true,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 3,
+                    random: true,
+                    animation: {
+                        enable: true,
+                        speed: 2,
+                        size_min: 0.1,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#00F0C8',
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 1,
+                    direction: 'none',
+                    random: true,
+                    straight: false,
+                    out_mode: 'out',
+                    bounce: false,
+                }
+            },
+            interactivity: {
+                detect_on: 'window',
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: 'grab'
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: 'push'
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 140,
+                        line_linked: {
+                            opacity: 0.5
+                        }
+                    },
+                    push: {
+                        particles_nb: 4
+                    }
+                }
+            },
+            retina_detect: true
+        });
+    </script>
+
+    <script>
+        function app() {
+            return {
+                apiKey: '1070730380f5fee0d87cf0382670b255',
+                person: null,
+                credits: [],
+                loading: false,
+                error: null,
+                currentTab: 'all',
+                searchQuery: '',
+                showSearchResults: false,
+                searchResults: [],
+                sidebarOpen: false,
+                showWatchLater: false,
+                watchLaterItems: [],
+                popularPeople: [],
+                currentPage: 1,
+                sortBy: 'popularity',
+                loadingProgress: 0,
+                loadingText: 'Loading...',
+                loadingSubtext: '',
+                loadingError: null,
+                retryAvailable: false,
+                currentBatch: 0,
+                totalBatches: 0,
+                visibleCredits: [],
+                creditsPerPage: 12,
+                currentCreditPage: 1,
+
+                async init() {
+                    // Initialize watch later items from localStorage
+                    const savedItems = localStorage.getItem('watchLater');
+                    if (savedItems) {
+                        this.watchLaterItems = JSON.parse(savedItems);
+                    }
+
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const personId = urlParams.get('id');
+
+                    if (personId) {
+                        await this.loadPerson(personId);
+                    } else {
+                        await this.loadPopularPeople();
+                    }
+
+                    // Watch for changes in watchLaterItems and update localStorage
+                    this.$watch('watchLaterItems', (items) => {
+                        localStorage.setItem('watchLater', JSON.stringify(items));
+                    });
+                },
+
+                async loadPopularPeople() {
+                    this.loading = true;
+                    try {
+                        let url;
+                        if (this.sortBy === 'trending') {
+                            url = `https://api.themoviedb.org/3/trending/person/week?api_key=${this.apiKey}&page=${this.currentPage}`;
+                        } else {
+                            url = `https://api.themoviedb.org/3/person/popular?api_key=${this.apiKey}&page=${this.currentPage}`;
+                        }
+                        
+                        const response = await fetch(url);
+                        if (!response.ok) throw new Error('Failed to load popular people');
+                        const data = await response.json();
+                        
+                        if (this.currentPage === 1) {
+                            this.popularPeople = data.results;
+                        } else {
+                            this.popularPeople = [...this.popularPeople, ...data.results];
+                        }
+
+                        if (this.sortBy === 'name') {
+                            this.popularPeople.sort((a, b) => a.name.localeCompare(b.name));
+                        }
+                    } catch (err) {
+                        console.error('Error loading popular people:', err);
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+
+                async loadMorePeople() {
+                    this.currentPage++;
+                    await this.loadPopularPeople();
+                },
+
+                async sortPeople() {
+                    this.currentPage = 1;
+                    await this.loadPopularPeople();
+                },
+
+                async loadPerson(id) {
+                    this.loading = true;
+                    this.loadingProgress = 0;
+                    this.loadingText = 'Loading person details...';
+                    this.loadingSubtext = '';
+                    this.loadingError = null;
+                    this.retryAvailable = false;
+                    this.error = null;
+                    this.person = null;
+                    this.credits = [];
+                    this.visibleCredits = [];
+                    this.currentCreditPage = 1;
+
+                    try {
+                        // Fetch person details
+                        this.loadingText = 'Loading basic information...';
+                        this.person = await this.fetchWithRetry(
+                            `https://api.themoviedb.org/3/person/${id}?api_key=${this.apiKey}&language=en-US`
+                        );
+
+                        // Fetch combined credits
+                        this.loadingText = 'Loading filmography...';
+                        const creditsData = await this.fetchWithRetry(
+                            `https://api.themoviedb.org/3/person/${id}/combined_credits?api_key=${this.apiKey}&language=en-US`
+                        );
+
+                        // Process credits in batches
+                        this.loadingText = 'Loading detailed information...';
+                        const validCredits = creditsData.cast.concat(creditsData.crew)
+                            .filter(credit => credit.id)
+                            .filter((credit, index, self) => 
+                                index === self.findIndex(c => 
+                                    c.id === credit.id && c.media_type === credit.media_type
+                                )
+                            );
+
+                        this.credits = await this.fetchInBatches(validCredits);
+                        
+                        // Initialize visible credits based on sortedCredits
+                        this.visibleCredits = (this.sortedCredits || []).slice(0, this.creditsPerPage);
+
+                    } catch (err) {
+                        this.error = "Failed to load data. Please try again later.";
+                        this.loadingError = err.message;
+                        this.retryAvailable = true;
+                        console.error('Error loading person data:', err);
+                    } finally {
+                        this.loading = false;
+                        this.loadingProgress = 100;
+                    }
+                },
+
+                get sortedCredits() {
+                    if (!this.credits || !Array.isArray(this.credits)) return [];
+                    
+                    return [...this.credits]
+                        .filter(credit => {
+                            if (this.currentTab === 'all') return true;
+                            if (!credit.media_type) return false;
+                            return this.currentTab === credit.media_type;
+                        })
+                        .sort((a, b) => {
+                            // Sort by popularity and then by release date
+                            const popA = a.popularity || 0;
+                            const popB = b.popularity || 0;
+                            if (popA !== popB) {
+                                return popB - popA;
+                            }
+                            const dateA = new Date(a.release_date || a.first_air_date || '0');
+                            const dateB = new Date(b.release_date || b.first_air_date || '0');
+                            return dateB - dateA;
+                        });
+                },
+
+                async searchPeople() {
+                    if (!this.searchQuery.trim()) {
+                        this.searchResults = [];
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch(
+                            `https://api.themoviedb.org/3/search/person?api_key=${this.apiKey}&query=${encodeURIComponent(this.searchQuery)}&language=en-US&page=1`
+                        );
+                        if (!response.ok) throw new Error('Search failed');
+                        const data = await response.json();
+                        this.searchResults = data.results;
+                    } catch (err) {
+                        console.error('Search error:', err);
+                        this.searchResults = [];
+                    }
+                },
+
+                formatDate(dateString) {
+                    if (!dateString) return 'N/A';
+                    const date = new Date(dateString);
+                    return date.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                },
+
+                formatYear(dateString) {
+                    if (!dateString) return 'N/A';
+                    return new Date(dateString).getFullYear();
+                },
+
+                getMostPopularMovie() {
+                    if (!this.credits || this.credits.length === 0) return null;
+                    
+                    // Sort by popularity and get the most popular one
+                    return [...this.credits]
+                        .sort((a, b) => (b.popularity || 0) - (a.popularity || 0))[0];
+                },
+
+                // Add new utility methods for API handling
+                async sleep(ms) {
+                    return new Promise(resolve => setTimeout(resolve, ms));
+                },
+
+                async fetchWithRetry(url, retries = 3, delay = 1000) {
+                    for (let i = 0; i < retries; i++) {
+                        try {
+                            const response = await fetch(url);
+                            if (response.status === 429) {
+                                const retryAfter = response.headers.get('Retry-After') || delay;
+                                await this.sleep(retryAfter * 1000);
+                                continue;
+                            }
+                            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                            return await response.json();
+                        } catch (error) {
+                            if (i === retries - 1) throw error;
+                            await this.sleep(delay);
+                        }
+                    }
+                },
+
+                async fetchInBatches(items, batchSize = 3, delay = 1500) {
+                    const results = [];
+                    this.totalBatches = Math.ceil(items.length / batchSize);
+                    this.currentBatch = 0;
+                    
+                    for (let i = 0; i < items.length; i += batchSize) {
+                        this.currentBatch++;
+                        this.loadingProgress = (this.currentBatch / this.totalBatches) * 100;
+                        this.loadingSubtext = `Loading batch ${this.currentBatch} of ${this.totalBatches}...`;
+
+                        const batch = items.slice(i, i + batchSize);
+                        try {
+                            const batchPromises = batch.map(async item => {
+                                try {
+                                    const type = item.media_type || (item.first_air_date ? 'tv' : 'movie');
+                                    const details = await this.fetchWithRetry(
+                                        `https://api.themoviedb.org/3/${type}/${item.id}?api_key=${this.apiKey}&language=en-US`
+                                    );
+                                    return {
+                                        ...item,
+                                        ...details,
+                                        media_type: type
+                                    };
+                                } catch (error) {
+                                    console.error(`Error fetching details for ${item.id}:`, error);
+                                    return item;
+                                }
+                            });
+
+                            const batchResults = await Promise.all(batchPromises);
+                            results.push(...batchResults);
+
+                            if (i + batchSize < items.length) {
+                                await this.sleep(delay);
+                            }
+                        } catch (error) {
+                            console.error(`Error processing batch ${this.currentBatch}:`, error);
+                            this.loadingError = `Error loading batch ${this.currentBatch}. Some data might be missing.`;
+                        }
+                    }
+                    return results;
+                },
+
+                retryLoading() {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const personId = urlParams.get('id');
+                    if (personId) {
+                        this.loadPerson(personId);
+                    }
+                },
+
+                loadMoreCredits() {
+                    if (this.loading || this.currentCreditPage * this.creditsPerPage >= (this.sortedCredits?.length || 0)) return;
+                    this.currentCreditPage++;
+                    const start = 0;
+                    const end = this.currentCreditPage * this.creditsPerPage;
+                    this.visibleCredits = (this.sortedCredits || []).slice(start, end);
+                },
+
+                // Add Alpine Intersection Observer plugin (if not already included)
+                setupIntersectionObserver() {
+                    document.addEventListener('alpine:init', () => {
+                        Alpine.plugin(AlpineIntersect)
+                    })
+                }
+            }
+        }
+    </script>
+</body>
+</html> 

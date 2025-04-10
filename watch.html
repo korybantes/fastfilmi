@@ -3,25 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Watch - lmovies</title>
-    <meta name="description" content="Click, watch, enjoy. lmovies breaks down the paywall, ensuring that quality content is accessible to everyone.">
-    <meta name="keywords" content="movies, tv shows, streaming, free movies, watch online, lmovies streaming">
-    <meta name="robots" content="index, follow">
-    <meta name="author" content="ambrosial">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://lmoviesstream.top">
-    <meta property="og:title" content="lmovies">
-    <meta property="og:description" content="Click, watch, enjoy. lmovies breaks down the paywall, ensuring that quality content is accessible to everyone.">
-    <meta property="og:image:width" content="300">
-    <meta property="og:image:height" content="300">
-    <meta property="og:image" content="https://raw.githubusercontent.com/korybantes/lmovies/main/logo.png">
+    <title>Watch - Fastfilmy</title>
+    <meta content="Fastfilmy - Watch Movies & TV Shows" property="og:title"/>
+    <meta name="keywords" content="free movies, free streaming, watch movies online, free tv shows, streaming service, watch movies free, online streaming, fastfilmy, free movies online, free series online">
+    <meta content="Click, watch, enjoy. Fastfilmy breaks down the paywall, ensuring that quality content is accessible to everyone." property="og:description"/>
+    <meta content="https://fastfilmy.top" property="og:url"/>
+    <meta content="logo.svg" property="og:image"/>
+    <meta content="#09091C" data-react-helmet="true" name="theme-color"/>
     <meta property="twitter:card" content="summary">
-    <meta property="twitter:url" content="https://lmoviesstream.top">
-    <meta property="twitter:title" content="lmovies - Watch Movies & TV Shows">
-    <meta property="twitter:description" content="Click, watch, enjoy. lmovies breaks down the paywall, ensuring that quality content is accessible to everyone.">
-    <meta property="twitter:image" content="https://raw.githubusercontent.com/korybantes/lmovies/main/logo.png">
-    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/korybantes/lmovies/main/logo.png">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta property="twitter:url" content="https://fastfilmy.top">
+    <meta property="twitter:title" content="Fastfilmy - Watch Movies & TV Shows">
+    <meta property="twitter:description" content="Click, watch, enjoy. Fastfilmy breaks down the paywall, ensuring that quality content is accessible to everyone.">
+    <meta property="twitter:image" content="logo.svg">
+    <link rel="icon" type="image/svg+xml" href="logo.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.10.3/cdn.min.js" defer></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="sources.js"></script>
@@ -31,22 +26,64 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Poppins', 'sans-serif'],
+                        sans: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        neo: {
+                            bg: '#09091C',
+                            card: '#12123B',
+                            accent: '#FF2E9F',
+                            secondary: '#6919E6',
+                            tertiary: '#00F0C8',
+                            highlight: '#3B82F6',
+                            text: '#F0F4FA',
+                            textDark: '#94A3B8',
+                        }
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 10s ease infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'shimmer': 'shimmer 2.5s linear infinite',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-position': '0% 50%'
+                            },
+                            '50%': {
+                                'background-position': '100% 50%'
+                            },
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        'shimmer': {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' },
+                        }
                     },
                 },
             },
         }
     </script>
     <style>
-        .glass-effect {
-            background: rgba(17, 24, 39, 0.7);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        body {
+            background-color: #09091C;
+            background-image: 
+                radial-gradient(circle at 20% 35%, rgba(105, 25, 230, 0.15) 0%, transparent 30%),
+                radial-gradient(circle at 85% 20%, rgba(0, 240, 200, 0.15) 0%, transparent 30%),
+                radial-gradient(circle at 10% 85%, rgba(255, 46, 159, 0.15) 0%, transparent 30%);
+            background-attachment: fixed;
         }
 
-        .backdrop-gradient {
-            background: linear-gradient(to bottom, rgba(17, 24, 39, 0) 0%, rgba(17, 24, 39, 1) 100%);
+        /* Add no-select class for slider */
+        .no-select {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         .nav-link {
@@ -61,167 +98,212 @@
             width: 0;
             height: 2px;
             bottom: 0;
-            left: 50%;
-            background: linear-gradient(to right, #1DB954, #4c1d95);
+            left: 0;
+            background: linear-gradient(90deg, #FF2E9F, #6919E6);
             transition: all 0.3s ease;
-            transform: translateX(-50%);
         }
 
         .nav-link:hover {
-            color: #1DB954;
+            color: #00F0C8;
         }
 
         .nav-link:hover::after {
             width: 100%;
         }
 
-        .section-header {
-            cursor: pointer;
-            user-select: none;
+        .glass-effect {
+            background: rgba(9, 9, 28, 0.7);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
 
-        .section-content {
-            transition: all 0.3s ease;
-            overflow: hidden;
+        .glassmorphic {
+            background: rgba(18, 18, 59, 0.7);
+            backdrop-filter: blur(16px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
-        .section-content.collapsed {
-            max-height: 0;
-            opacity: 0;
-            padding-top: 0;
-            padding-bottom: 0;
-        }
-
-        .section-content.expanded {
-            max-height: 2000px;
-            opacity: 1;
+        .glassmorphic-hover:hover {
+            box-shadow: 0 15px 30px rgba(105, 25, 230, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
         }
 
         .card-hover {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            background: rgba(18, 18, 59, 0.7);
+            backdrop-filter: blur(16px);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .card-hover::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            background: linear-gradient(
+                35deg,
+                rgba(255, 46, 159, 0.5),
+                rgba(0, 240, 200, 0),
+                rgba(59, 130, 246, 0.5)
+            );
+            border-radius: 20px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
         .card-hover:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.5);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -20px rgba(255, 46, 159, 0.3),
+                        0 0 15px rgba(59, 130, 246, 0.2);
         }
 
-        .card-hover:hover .card-overlay {
+        .card-hover:hover::before {
             opacity: 1;
         }
 
-        .card-overlay {
-            opacity: 0;
-            transition: opacity 0.3s ease;
+        .neo-button {
+            background: linear-gradient(90deg, #FF2E9F, #6919E6);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .neo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -6px rgba(255, 46, 159, 0.6);
+        }
+
+        .neo-button::after {
+            content: '';
+            position: absolute;
+            left: -50%;
+            top: -50%;
+            width: 200%;
+            height: 200%;
             background: linear-gradient(
-                to top,
-                rgba(0, 0, 0, 0.9) 0%,
-                rgba(0, 0, 0, 0.7) 50%,
-                rgba(0, 0, 0, 0.3) 100%
+                60deg, 
+                rgba(255, 255, 255, 0) 10%,
+                rgba(255, 255, 255, 0.1) 30%, 
+                rgba(255, 255, 255, 0) 50%
             );
+            transform: rotate(45deg);
+            transition: all 0.8s ease;
+            z-index: -1;
+        }
+        
+        .neo-button:hover::after {
+            left: 100%;
+            top: 100%;
         }
 
-        @keyframes textColorAnimation {
-            0% { color: #A855F7; }
-            50% { color: #7C3AED; }
-            100% { color: #A855F7; }
-        }
-        .animated-text {
-            animation: textColorAnimation 2s ease-in-out infinite;
+        .card-overlay {
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.6) 35%, rgba(0, 0, 0, 0) 100%);
         }
 
-        .card-hover:hover img {
-            filter: blur(3px);
-            transition: filter 0.3s ease;
+        /* Animation and Effects */
+        .hover-effect {
+            transition: all 0.3s ease;
+        }
+        
+        .hover-effect:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 10px rgba(var(--color-accent-rgb), 0.5));
         }
 
-        .card-hover img {
-            transition: filter 0.3s ease;
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: linear-gradient(to right, #FF2E9F, #3B82F6);
+            transition: width 0.3s ease;
+            z-index: 60;
         }
 
-        .search-container::before {
-            background: radial-gradient(
-                circle at var(--mouse-x, center) var(--mouse-y, center),
-                rgba(168, 85, 247, 0.5) 0%,
-                rgba(168, 85, 247, 0.2) 25%,
-                transparent 70%
-            );
+        .platform-logo {
+            transition: all 0.3s ease;
+            filter: grayscale(100%);
         }
 
-        .search-input:focus {
-            box-shadow: 0 0 20px rgba(167, 139, 250, 0.3);
-            transform: scale(1.02);
-            background: rgba(31, 41, 55, 0.9);
+        .platform-logo:hover {
+            filter: grayscale(0%);
+            transform: scale(1.1);
         }
 
-        @keyframes spin {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(180deg);
-            }
+        /* Source box */
+        .source-box {
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .settings-icon {
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        .source-box:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
         }
 
-        .settings-icon:hover {
-            transform: rotate(180deg);
+        .source-box.active {
+            background: rgba(255, 46, 159, 0.1);
+            border-color: rgba(255, 46, 159, 0.3);
         }
     </style>
 </head>
-<body class="bg-gray-900 text-white min-h-screen" x-data="app()">
-    <div x-show="localStorage.getItem('showParticles') !== 'false'" id="particles-js" class="fixed inset-0 pointer-events-none z-0"></div>
+<body class="text-neo-text min-h-screen" x-data="app()">
+    <!-- Progress Bar -->
+    <div class="progress-bar" :style="'width: ' + progressValue + '%'"></div>
 
-    <!-- navigation -->
-    <nav class="fixed w-full z-50 glass-effect">
-        <div class="container mx-auto px-4 md:px-6 py-3">
+    <!-- Header -->
+    <nav class="glass-effect sticky top-0 z-50 px-4 md:px-6 py-4 transition-all duration-300" 
+         :class="{ 'py-2': isScrolled }" x-data="{ isScrolled: false, mobileMenu: false }" 
+         @scroll.window="isScrolled = window.pageYOffset > 20">
+        <div class="container mx-auto">
             <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-8">
-                    <a href="/" class="flex items-center space-x-3">
-                        <img src="logo.png" alt="lmovies Logo" class="h-8 w-8 md:h-10 md:w-10">
-                        <span class="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-violet-800">lmovies</span>
-                </a>
+                <div class="flex items-center space-x-3">
+                        <div class="h-11 w-11 bg-gradient-to-br from-neo-accent via-neo-secondary to-neo-tertiary rounded-2xl flex items-center justify-center shadow-lg shadow-neo-secondary/20">
+                        <a href="index.html">
+                            <img src="logo.svg" alt="Fastfilmy Logo" class="h-8 w-8 animate-float">
+                    </a>
+                    </div>
+                    <span class="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-neo-accent via-neo-tertiary to-neo-highlight">Fastfilmy</span>
+                </div>
+
                     <div class="hidden md:flex space-x-6">
-                        <a href="/" class="nav-link flex items-center">
+                    <a href="index.html" class="nav-link flex items-center">
                             <span>Browse</span>
                         </a>
                         <button @click="showWatchLater = true" class="nav-link flex items-center space-x-2">
                             <span>Watch Later</span>
                             <span x-show="watchLaterCount > 0" 
-                                  class="bg-purple-600 text-white text-xs flex items-center justify-center rounded-full w-6 h-6" 
+                                  class="bg-neo-accent text-white text-xs flex items-center justify-center rounded-full w-6 h-6" 
                                   x-text="watchLaterCount"></span>
                         </button>
                         <a href="https://github.com/korybantes/lmovies" target="_blank" class="nav-link flex items-center">
                             <span>GitHub</span>
                         </a>
                         <a href="https://ko-fi.com/ambrosial" target="_blank" class="nav-link flex items-center">
-                            <span>Ko-Fi</span>
-                </a>
-                        <a href="https://discord.gg/s9kUZw7CqP" target="_blank" class="nav-link flex items-center">
-                            <span>Discord</span>
+                        <span>Support</span>
                         </a>
                     </div>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <a href="settings.html" class="text-gray-400 hover:text-purple-400 transition-colors duration-300" title="Settings">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 settings-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                </a>
-                    <!-- mobile menu button -->
-                    <button @click="mobileMenu = !mobileMenu" class="md:hidden text-gray-300 hover:text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
+
+                <button @click="mobileMenu = !mobileMenu" class="p-2 text-neo-text md:hidden">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M4 6h16M4 12h16m-7 6h7" 
+                              x-show="!mobileMenu" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M6 18L18 6M6 6l12 12" 
+                              x-show="mobileMenu" />
+                        </svg>
                     </button>
-                </div>
             </div>
             
-            <!-- mobile menu -->
             <div x-show="mobileMenu" 
                 x-transition:enter="transition ease-out duration-200"
                 x-transition:enter-start="opacity-0 transform -translate-y-2"
@@ -231,44 +313,42 @@
                 x-transition:leave-end="opacity-0 transform -translate-y-2"
                 class="md:hidden mt-4 pb-4">
                 <div class="flex flex-col space-y-4">
-                    <a href="/" class="px-4 py-2 hover:bg-gray-800 rounded-lg transition-colors">Browse</a>
+                    <a href="index.html" class="px-4 py-2 hover:bg-neo-card rounded-xl transition-colors">Browse</a>
                     <button @click="showWatchLater = true; mobileMenu = false" 
-                            class="flex items-center justify-between px-4 py-2 hover:bg-gray-800 rounded-lg transition-colors">
+                            class="flex items-center justify-between px-4 py-2 hover:bg-neo-card rounded-xl transition-colors">
                         <span>Watch Later</span>
                         <span x-show="watchLaterCount > 0" 
-                              class="bg-purple-600 text-white text-xs flex items-center justify-center rounded-full w-6 h-6" 
+                              class="bg-neo-accent text-white text-xs flex items-center justify-center rounded-full w-6 h-6" 
                               x-text="watchLaterCount"></span>
                     </button>
                     <a href="https://github.com/korybantes/lmovies" target="_blank" 
-                       class="px-4 py-2 hover:bg-gray-800 rounded-lg transition-colors">GitHub</a>
+                       class="px-4 py-2 hover:bg-neo-card rounded-xl transition-colors">GitHub</a>
                     <a href="https://ko-fi.com/ambrosial" target="_blank" 
-                       class="px-4 py-2 hover:bg-gray-800 rounded-lg transition-colors">Ko-Fi</a>
-                    <a href="https://discord.gg/s9kUZw7CqP" target="_blank" 
-                       class="px-4 py-2 hover:bg-gray-800 rounded-lg transition-colors">Discord</a>
+                       class="px-4 py-2 hover:bg-neo-card rounded-xl transition-colors">Support</a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- content -->
+    <!-- Content -->
     <div class="pt-16">
-        <!-- backdrop -->
+        <!-- Backdrop -->
         <div class="relative h-[30vh] sm:h-[40vh] md:h-[60vh]" x-show="content">
             <div class="absolute inset-0 bg-cover bg-center" :style="'background-image: url(https://image.tmdb.org/t/p/original' + content?.backdrop_path + ')'"></div>
-            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-neo-bg via-neo-bg/80 to-transparent"></div>
             <div class="absolute bottom-0 left-0 right-0 p-4 md:p-6 lg:p-12">
-                <!-- title logo -->
+                <!-- Title logo -->
                 <div class="mb-4" x-show="content?.images?.logos?.length > 0">
                     <img :src="'https://image.tmdb.org/t/p/w500' + content.images.logos[0].file_path" 
                          class="max-h-24 md:max-h-32 w-auto" 
                          :alt="content?.title || content?.name + ' logo'">
                 </div>
-                <!-- fallback title text -->
+                <!-- Fallback title text -->
                 <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold tracking-wide" 
                     x-show="!content?.images?.logos?.length"
                     x-text="content?.title || content?.name"></h1>
                 
-                <div class="mt-3 md:mt-4 flex items-center flex-wrap gap-2 md:gap-4 text-xs md:text-sm lg:text-base text-gray-300">
+                <div class="mt-3 md:mt-4 flex items-center flex-wrap gap-2 md:gap-4 text-xs md:text-sm lg:text-base text-neo-textDark">
                     <template x-if="content?.release_date">
                         <span x-text="new Date(content.release_date).getFullYear()"></span>
                     </template>
@@ -281,7 +361,7 @@
                     <template x-if="content?.vote_average">
                         <div class="flex items-center gap-1">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.922-.755 1.688-1.538 1.118l-2.8-2.034a1 1 0 00-1.176 0l-2.8 2.034c-.783.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                             </svg>
                             <span x-text="content.vote_average.toFixed(1)"></span>
                         </div>
@@ -290,19 +370,19 @@
 
                 <div class="flex flex-wrap gap-2 mt-3 md:mt-4">
                     <template x-for="genre in content?.genres" :key="genre.id">
-                        <span class="px-2 md:px-3 py-1 text-xs md:text-sm bg-black/30 backdrop-blur-sm rounded-full text-gray-300" x-text="genre.name"></span>
+                        <span class="px-2 md:px-3 py-1 text-xs md:text-sm bg-neo-card/50 backdrop-blur-sm rounded-full text-neo-textDark" x-text="genre.name"></span>
                     </template>
                 </div>
             </div>
         </div>
 
-        <!-- main content -->
+        <!-- Main content -->
         <div class="container mx-auto px-4 md:px-6 py-6 md:py-8 relative z-10">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
-                <!-- left column (video player and controls) -->
+                <!-- Left column (video player and controls) -->
                 <div class="lg:col-span-2 space-y-6">
-                    <!-- video player -->
-                    <div class="bg-gray-800 rounded-lg overflow-hidden">
+                    <!-- Video player -->
+                    <div class="bg-neo-card rounded-xl overflow-hidden border border-white/5">
                         <div class="relative pt-[56.25%]" id="player-container">
                             <iframe x-bind:src="currentVideoUrl" 
                                     class="absolute top-0 left-0 w-full h-full" 
@@ -313,28 +393,28 @@
                                     allowfullscreen>
                             </iframe>
                             <button @click="toggleWatchLater(content)" 
-                                    class="absolute top-2 right-2 p-1.5 md:p-2 bg-gray-900 bg-opacity-75 rounded-full hover:bg-purple-600 transition-colors duration-300"
-                                    :class="isInWatchLater(content) ? 'text-purple-400' : 'text-white'">
+                                    class="absolute top-2 right-2 p-1.5 md:p-2 bg-neo-card/75 rounded-full hover:bg-neo-accent transition-colors duration-300"
+                                    :class="isInWatchLater(content) ? 'text-neo-accent' : 'text-white'">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-6 md:w-6" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
                                 </svg>
                             </button>
-                            <!-- provider down message -->
+                            <!-- Provider down message -->
                             <div x-show="showDownMessage" 
-                                 class="absolute inset-0 flex items-center justify-center bg-gray-900 bg-opacity-90">
+                                 class="absolute inset-0 flex items-center justify-center bg-neo-card/90">
                                 <div class="text-center px-4">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 md:h-12 md:w-12 mx-auto text-red-500 mb-3 md:mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                                     </svg>
                                     <p class="text-lg md:text-xl font-semibold text-white mb-2">Source unavailable, trying alternatives... 🔄</p>
-                                    <p class="text-sm md:text-base text-gray-400">If this persists, you can manually select another source below!</p>
+                                    <p class="text-sm md:text-base text-neo-textDark">If this persists, you can manually select another source below!</p>
                                 </div>
                             </div>
                         </div>
                         <div class="p-3 md:p-4">
-                            <div class="flex items-center justify-between text-xs md:text-sm text-gray-400">
+                            <div class="flex items-center justify-between text-xs md:text-sm text-neo-textDark">
                                 <div class="hidden lg:block">
-                                    <a href="https://ko-fi.com/ambrosial" target="_blank" class="text-purple-400 hover:text-purple-300 transition-colors">Support me here</a>
+                                    <a href="https://ko-fi.com/ambrosial" target="_blank" class="text-neo-tertiary hover:text-neo-secondary transition-colors">Support me here</a>
                                 </div>
                                 <div class="text-center mx-auto animated-text" x-show="content?.runtime || content?.episode_run_time">
                                     <span>If you start now, it'll end at </span>
@@ -346,32 +426,32 @@
                                     })()"></span>
                                 </div>
                                 <div class="hidden lg:block">
-                                    <a href="https://ko-fi.com/ambrosial" target="_blank" class="text-purple-400 hover:text-purple-300 transition-colors">Support me here</a>
+                                    <a href="https://ko-fi.com/ambrosial" target="_blank" class="text-neo-tertiary hover:text-neo-secondary transition-colors">Support me here</a>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- episode selector -->
+                    <!-- Episode selector -->
                     <template x-if="isShow">
-                        <div class="bg-gray-800 rounded-lg p-4 md:p-6 space-y-4">
+                        <div class="bg-neo-card/50 rounded-xl p-4 md:p-6 space-y-4 border border-white/5">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center space-x-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6 text-neo-tertiary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
                                     </svg>
                                     <h3 class="text-lg md:text-xl font-semibold">Episodes</h3>
                                 </div>
                                 <div class="flex items-center space-x-2">
                                     <button @click="viewMode = viewMode === 'grid' ? 'list' : 'grid'" 
-                                            class="p-2 hover:bg-gray-700 rounded-lg transition-colors">
+                                            class="p-2 hover:bg-neo-card rounded-xl transition-colors">
                                         <template x-if="viewMode === 'grid'">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-neo-textDark hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                                             </svg>
                                         </template>
                                         <template x-if="viewMode === 'list'">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-neo-textDark hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                                             </svg>
                                         </template>
@@ -379,29 +459,29 @@
                                 </div>
                             </div>
 
-                            <!-- season selector -->
+                            <!-- Season selector -->
                             <div class="relative">
-                                <div class="flex items-center space-x-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
+                                <div class="flex items-center space-x-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-neo-secondary scrollbar-track-neo-card">
                                     <template x-for="season in seasons" :key="season">
                                         <button @click="selectedSeason = season; updateEpisodes()"
-                                                class="px-4 py-2 rounded-lg transition-all duration-300 whitespace-nowrap"
-                                                :class="selectedSeason === season ? 'bg-purple-600 text-white' : 'bg-gray-700 hover:bg-gray-600 text-gray-300'">
+                                                class="px-4 py-2 rounded-xl transition-all duration-300 whitespace-nowrap"
+                                                :class="selectedSeason === season ? 'neo-button text-white' : 'bg-neo-card/50 hover:bg-neo-secondary/20 text-neo-text'">
                                             <span x-text="'Season ' + season"></span>
                                         </button>
                                     </template>
                                 </div>
                             </div>
 
-                            <!-- episodes grid/list view -->
+                            <!-- Episodes grid/list view -->
                             <div :class="viewMode === 'grid' ? 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4' : 'space-y-4'">
                                 <template x-for="episode in seasonData?.episodes" :key="episode.episode_number">
                                     <div @click="selectedEpisode = episode.episode_number; loadEpisode()"
                                          :class="[
                                              viewMode === 'grid' 
-                                                ? 'bg-gray-700 rounded-lg overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-lg'
-                                                : 'bg-gray-700 rounded-lg overflow-hidden cursor-pointer hover:bg-gray-600 transition-colors',
+                                                ? 'bg-neo-card/50 rounded-xl overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-lg'
+                                                : 'bg-neo-card/50 rounded-xl overflow-hidden cursor-pointer hover:bg-neo-secondary/20 transition-colors',
                                              selectedEpisode === episode.episode_number 
-                                                ? 'ring-2 ring-purple-500 ring-offset-2 ring-offset-gray-900'
+                                                ? 'ring-2 ring-neo-accent ring-offset-2 ring-offset-neo-bg'
                                                 : ''
                                          ]">
                                         <template x-if="viewMode === 'grid'">
@@ -412,13 +492,13 @@
                                                               : 'https://via.placeholder.com/300x169'"
                                                          :alt="episode.name"
                                                          class="w-full h-full object-cover">
-                                                    <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+                                                    <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-neo-bg/80 to-transparent">
                                                         <span class="text-sm font-medium" x-text="'Episode ' + episode.episode_number"></span>
                                                     </div>
                                                 </div>
                                                 <div class="p-3">
                                                     <h4 class="font-medium text-sm line-clamp-1" x-text="episode.name"></h4>
-                                                    <p class="text-xs text-gray-400 mt-1 line-clamp-2" x-text="episode.overview || 'No description available.'"></p>
+                                                    <p class="text-xs text-neo-textDark mt-1 line-clamp-2" x-text="episode.overview || 'No description available.'"></p>
                                                 </div>
                                             </div>
                                         </template>
@@ -433,11 +513,11 @@
                                                 </div>
                                                 <div class="flex-1 min-w-0">
                                                     <div class="flex items-center justify-between">
-                                                        <span class="text-sm font-medium text-gray-400" x-text="'Episode ' + episode.episode_number"></span>
-                                                        <span class="text-xs text-gray-500" x-text="episode.air_date"></span>
+                                                        <span class="text-sm font-medium text-neo-textDark" x-text="'Episode ' + episode.episode_number"></span>
+                                                        <span class="text-xs text-neo-textDark/50" x-text="episode.air_date"></span>
                                                     </div>
                                                     <h4 class="font-medium mt-1" x-text="episode.name"></h4>
-                                                    <p class="text-sm text-gray-400 mt-1 line-clamp-2" x-text="episode.overview || 'No description available.'"></p>
+                                                    <p class="text-sm text-neo-textDark mt-1 line-clamp-2" x-text="episode.overview || 'No description available.'"></p>
                                                 </div>
                                             </div>
                                         </template>
@@ -447,10 +527,10 @@
                         </div>
                     </template>
 
-                    <!-- source selector -->
-                    <div class="bg-gray-800 rounded-lg p-4 md:p-6">
+                    <!-- Source selector -->
+                    <div class="bg-neo-card/50 rounded-xl p-4 md:p-6 border border-white/5">
                         <div class="flex items-center space-x-3 mb-3 md:mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6 text-neo-tertiary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
@@ -458,14 +538,14 @@
                         </div>
                         <div class="space-y-3 md:space-y-4">
                             <div class="space-y-2">
-                                <h4 class="text-sm md:text-base text-gray-300 font-medium">English Sources:</h4>
+                                <h4 class="text-sm md:text-base text-neo-tertiary font-medium">English Sources:</h4>
                                 <div class="flex flex-wrap gap-2">
                                     <template x-for="source in availableSources" :key="source.id">
                                         <template x-if="!source.isFrench">
                                             <button 
                                                 @click="selectedSource = source.id; updateVideoUrl()"
-                                                class="px-3 md:px-4 py-1.5 md:py-2 rounded-lg transition-all duration-300 text-sm md:text-base"
-                                                :class="selectedSource === source.id ? 'bg-purple-600 text-white' : 'bg-gray-700 hover:bg-gray-600 text-gray-200'"
+                                                class="px-3 md:px-4 py-1.5 md:py-2 rounded-xl transition-all duration-300 text-sm md:text-base"
+                                                :class="selectedSource === source.id ? 'neo-button text-white' : 'bg-neo-card hover:bg-neo-secondary/20 text-neo-text'"
                                                 x-text="source.name">
                                             </button>
                                         </template>
@@ -473,14 +553,14 @@
                                 </div>
                             </div>
                             <div class="space-y-2">
-                                <h4 class="text-sm md:text-base text-gray-300 font-medium">French Sources:</h4>
+                                <h4 class="text-sm md:text-base text-neo-tertiary font-medium">French Sources:</h4>
                                 <div class="flex flex-wrap gap-2">
                                     <template x-for="source in availableSources" :key="source.id">
                                         <template x-if="source.isFrench">
                                             <button 
                                                 @click="selectedSource = source.id; updateVideoUrl()"
-                                                class="px-3 md:px-4 py-1.5 md:py-2 rounded-lg transition-all duration-300 text-sm md:text-base"
-                                                :class="selectedSource === source.id ? 'bg-purple-600 text-white' : 'bg-gray-700 hover:bg-gray-600 text-gray-200'"
+                                                class="px-3 md:px-4 py-1.5 md:py-2 rounded-xl transition-all duration-300 text-sm md:text-base"
+                                                :class="selectedSource === source.id ? 'neo-button text-white' : 'bg-neo-card hover:bg-neo-secondary/20 text-neo-text'"
                                                 x-text="source.name">
                                             </button>
                                         </template>
@@ -490,19 +570,19 @@
                         </div>
                     </div>
 
-                    <!-- torrent download section -->
-                    <div class="mt-8 bg-gray-800 rounded-lg p-6">
+                    <!-- Torrent download section -->
+                    <div class="mt-8 bg-neo-card/50 rounded-xl p-6 border border-white/5">
                         <div class="flex items-center justify-between mb-4">
                             <div class="flex items-center space-x-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-neo-tertiary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                                 </svg>
-                                <h3 class="text-xl font-semibold text-gray-200">Download</h3>
+                                <h3 class="text-xl font-semibold text-neo-text">Download</h3>
                             </div>
                             <template x-if="isShow">
                                 <div class="flex items-center space-x-2">
-                                    <label class="text-gray-400">Season:</label>
-                                    <select x-model="selectedTorrentSeason" @change="fetchTorrentInfo()" class="bg-gray-700 text-gray-200 rounded px-2 py-1">
+                                    <label class="text-neo-textDark">Season:</label>
+                                    <select x-model="selectedTorrentSeason" @change="fetchTorrentInfo()" class="bg-neo-card text-neo-text rounded-xl px-2 py-1">
                                         <template x-for="season in seasons" :key="season">
                                             <option :value="season" x-text="season"></option>
                                         </template>
@@ -511,22 +591,22 @@
                             </template>
                         </div>
 
-                        <div x-show="torrentInfo === undefined" class="text-center text-gray-400 py-4">
+                        <div x-show="torrentInfo === undefined" class="text-center text-neo-textDark py-4">
                             Loading torrent information...
                         </div>
 
-                        <div x-show="torrentInfo === null" class="text-center text-gray-400 py-4">
+                        <div x-show="torrentInfo === null" class="text-center text-neo-textDark py-4">
                             No torrents found
                         </div>
 
                         <div x-show="torrentInfo && torrentInfo.length > 0" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <template x-for="torrent in torrentInfo" :key="torrent.magnet">
-                                <div class="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors duration-300">
+                                <div class="bg-neo-card rounded-xl p-4 hover:bg-neo-secondary/20 transition-colors duration-300">
                                     <div class="flex items-center justify-between mb-3">
                                         <div class="flex items-center space-x-2">
-                                            <span class="text-purple-400 font-semibold" x-text="torrent.quality || 'N/A'"></span>
-                                            <span class="text-gray-400">•</span>
-                                            <span class="text-gray-300" x-text="torrent.type || 'N/A'"></span>
+                                            <span class="text-neo-accent font-semibold" x-text="torrent.quality || 'N/A'"></span>
+                                            <span class="text-neo-textDark">•</span>
+                                            <span class="text-neo-text" x-text="torrent.type || 'N/A'"></span>
                                         </div>
                                         <div class="flex items-center space-x-1 text-green-400">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -535,7 +615,7 @@
                                             <span x-text="torrent.seeders || '0'"></span>
                                         </div>
                                     </div>
-                                    <a :href="torrent.magnet" class="block w-full text-center bg-purple-600 text-white text-sm font-medium rounded-md py-2 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors">
+                                    <a :href="torrent.magnet" class="block w-full text-center neo-button text-white text-sm font-medium rounded-xl py-2">
                                         Download Torrent
                                     </a>
                                 </div>
@@ -544,13 +624,13 @@
                     </div>
                 </div>
 
-                <!-- right column (content details) -->
+                <!-- Right column (content details) -->
                 <div class="space-y-6">
-                    <!-- overview -->
-                    <div class="bg-gray-800 rounded-lg p-6">
+                    <!-- Overview -->
+                    <div class="bg-neo-card/50 rounded-xl p-6 border border-white/5">
                         <div class="flex items-center justify-between section-header" @click="toggleSection('overview')">
                             <div class="flex items-center space-x-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-neo-tertiary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                                 <h3 class="text-xl font-semibold">Overview</h3>
@@ -560,15 +640,15 @@
                             </svg>
                         </div>
                         <div class="section-content mt-4" :class="sections.overview ? 'expanded' : 'collapsed'">
-                            <p class="text-gray-300" x-text="content?.overview"></p>
+                            <p class="text-neo-textDark" x-text="content?.overview"></p>
                         </div>
                     </div>
 
-                    <!-- details -->
-                    <div class="bg-gray-800 rounded-lg p-6">
+                    <!-- Details -->
+                    <div class="bg-neo-card/50 rounded-xl p-6 border border-white/5">
                         <div class="flex items-center justify-between section-header" @click="toggleSection('details')">
                             <div class="flex items-center space-x-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-neo-tertiary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                                 <h3 class="text-xl font-semibold">Details</h3>
@@ -579,10 +659,10 @@
                         </div>
                         <div class="section-content mt-4" :class="sections.details ? 'expanded' : 'collapsed'">
                             <div>
-                                <!-- content warnings -->
+                                <!-- Content warnings -->
                                 <template x-if="content?.adult || content?.violence || content?.profanity || content?.substances || content?.suggestive || content?.flashing">
                                     <div class="mb-4">
-                                        <h4 class="text-lg font-semibold text-purple-400 mb-3">Content Warnings</h4>
+                                        <h4 class="text-lg font-semibold text-neo-tertiary mb-3">Content Warnings</h4>
                                         <div class="space-y-2">
                                             <template x-if="content?.adult">
                                                 <div class="flex items-center space-x-2 text-red-400">
@@ -636,26 +716,26 @@
                                     </div>
                                 </template>
 
-                                <!-- other details -->
+                                <!-- Other details -->
                                 <div class="space-y-2">
-                                    <p class="text-gray-300">
+                                    <p class="text-neo-textDark">
                                         <span class="font-medium">Status:</span>
                                         <span x-text="content?.status"></span>
                                     </p>
-                                    <p class="text-gray-300">
+                                    <p class="text-neo-textDark">
                                         <span class="font-medium">Release Date:</span>
                                         <span x-text="content?.release_date || content?.first_air_date"></span>
                                     </p>
                                     <template x-if="isShow">
-                                        <p class="text-gray-300">
+                                        <p class="text-neo-textDark">
                                             <span class="font-medium">Seasons:</span>
                                             <span x-text="content?.number_of_seasons"></span>
                                         </p>
                                     </template>
-                                    <p class="text-gray-300">
+                                    <p class="text-neo-textDark">
                                         <span class="font-medium">Rating: ⭐<span x-text="content?.vote_average?.toFixed(1) + '/10 (' + content?.vote_count + ' votes)'"></span></span>
                                     </p>
-                                    <p class="text-gray-300">
+                                    <p class="text-neo-textDark">
                                         <span class="font-medium">Genres:</span>
                                         <span x-text="content?.genres?.map(g => g.name).join(', ')"></span>
                                     </p>
@@ -664,11 +744,11 @@
                         </div>
                     </div>
 
-                    <!-- cast -->
-                    <div class="bg-gray-800 rounded-lg p-6">
+                    <!-- Cast -->
+                    <div class="bg-neo-card/50 rounded-xl p-6 border border-white/5">
                         <div class="flex items-center justify-between section-header" @click="toggleSection('cast')">
                             <div class="flex items-center space-x-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-neo-tertiary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                 </svg>
                                 <h3 class="text-xl font-semibold">Cast</h3>
@@ -680,7 +760,7 @@
                         <div class="section-content mt-4" :class="sections.cast ? 'expanded' : 'collapsed'">
                             <div class="relative overflow-visible px-6">
                                 <button @click="castPage > 0 && castPage--" 
-                                        class="absolute left-0 top-1/2 -translate-y-1/2 bg-gray-900 p-2 rounded-full hover:bg-gray-700 transition-all duration-300 z-20"
+                                        class="absolute left-0 top-1/2 -translate-y-1/2 bg-neo-card p-2 rounded-full hover:bg-neo-secondary/20 transition-all duration-300 z-20"
                                         :class="castPage === 0 ? 'opacity-50 cursor-not-allowed' : 'opacity-100'">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -688,7 +768,7 @@
                                 </button>
                                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 relative overflow-hidden">
                                     <template x-for="actor in displayedCast" :key="actor.id">
-                                        <div class="flex items-center space-x-3">
+                                        <a :href="'people.html?id=' + actor.id" class="flex items-center space-x-3 hover:bg-neo-card/50 p-2 rounded-xl transition-colors">
                                             <div class="w-12 h-12 flex-shrink-0">
                                                 <template x-if="actor.profile_path">
                                                     <img :src="'https://image.tmdb.org/t/p/w200' + actor.profile_path"
@@ -696,20 +776,22 @@
                                                          class="w-full h-full rounded-full object-cover">
                                                 </template>
                                                 <template x-if="!actor.profile_path">
-                                                    <div class="w-full h-full rounded-full bg-gray-700 flex items-center justify-center text-xs text-gray-400">
-                                                        X
+                                                    <div class="w-full h-full rounded-full bg-neo-card flex items-center justify-center text-xs text-neo-textDark">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                                        </svg>
                                                     </div>
                                                 </template>
                                             </div>
                                             <div>
-                                                <p class="font-medium text-sm" x-text="actor.name"></p>
-                                                <p class="text-gray-400 text-xs" x-text="actor.character"></p>
+                                                <p class="font-medium text-sm hover:text-neo-accent transition-colors" x-text="actor.name"></p>
+                                                <p class="text-neo-textDark text-xs" x-text="actor.character"></p>
                                             </div>
-                                        </div>
+                                        </a>
                                     </template>
                                 </div>
                                 <button @click="castPage < maxCastPage && castPage++" 
-                                        class="absolute right-0 top-1/2 -translate-y-1/2 bg-gray-900 p-2 rounded-full hover:bg-gray-700 transition-all duration-300 z-20"
+                                        class="absolute right-0 top-1/2 -translate-y-1/2 bg-neo-card p-2 rounded-full hover:bg-neo-secondary/20 transition-all duration-300 z-20"
                                         :class="castPage >= maxCastPage ? 'opacity-50 cursor-not-allowed' : 'opacity-100'">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -720,18 +802,18 @@
                                 <template x-for="page in maxCastPage + 1" :key="page">
                                     <button @click="castPage = page - 1"
                                             class="w-2 h-2 rounded-full transition-all duration-300"
-                                            :class="castPage === page - 1 ? 'bg-purple-500' : 'bg-gray-600 hover:bg-gray-500'">
+                                            :class="castPage === page - 1 ? 'bg-neo-accent' : 'bg-neo-card hover:bg-neo-secondary/20'">
                                     </button>
                                 </template>
                             </div>
                         </div>
                     </div>
 
-                    <!-- production info -->
-                    <div class="bg-gray-800 rounded-lg p-6">
+                    <!-- Production info -->
+                    <div class="bg-neo-card/50 rounded-xl p-6 border border-white/5">
                         <div class="flex items-center justify-between section-header" @click="toggleSection('production')">
                             <div class="flex items-center space-x-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-neo-tertiary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                 </svg>
                                 <h3 class="text-xl font-semibold">Production Info</h3>
@@ -743,37 +825,37 @@
                         <div class="section-content mt-4" :class="sections.production ? 'expanded' : 'collapsed'">
                             <div class="space-y-2">
                                 <template x-if="content?.production_companies?.length > 0">
-                                    <p class="text-gray-300">
+                                    <p class="text-neo-textDark">
                                         <span class="font-medium">Studios:</span>
                                         <span x-text="content.production_companies.map(c => c.name).join(', ')"></span>
                                     </p>
                                 </template>
                                 <template x-if="content?.production_countries?.length > 0">
-                                    <p class="text-gray-300">
+                                    <p class="text-neo-textDark">
                                         <span class="font-medium">Countries:</span>
                                         <span x-text="content.production_countries.map(c => c.name).join(', ')"></span>
                                     </p>
                                 </template>
                                 <template x-if="content?.spoken_languages?.length > 0">
-                                    <p class="text-gray-300">
+                                    <p class="text-neo-textDark">
                                         <span class="font-medium">Languages:</span>
                                         <span x-text="content.spoken_languages.map(l => l.english_name).join(', ')"></span>
                                     </p>
                                 </template>
                                 <template x-if="!isShow && content?.runtime">
-                                    <p class="text-gray-300">
+                                    <p class="text-neo-textDark">
                                         <span class="font-medium">Runtime:</span>
                                         <span x-text="Math.floor(content.runtime / 60) + 'h ' + (content.runtime % 60) + 'm'"></span>
                                     </p>
                                 </template>
                                 <template x-if="content?.budget">
-                                    <p class="text-gray-300">
+                                    <p class="text-neo-textDark">
                                         <span class="font-medium">Budget:</span>
                                         <span x-text="'$' + content.budget.toLocaleString()"></span>
                                     </p>
                                 </template>
                                 <template x-if="content?.revenue">
-                                    <p class="text-gray-300">
+                                    <p class="text-neo-textDark">
                                         <span class="font-medium">Revenue:</span>
                                         <span x-text="'$' + content.revenue.toLocaleString()"></span>
                                     </p>
@@ -782,11 +864,11 @@
                         </div>
                     </div>
 
-                    <!-- trailers -->
-                    <div class="bg-gray-800 rounded-lg p-6">
+                    <!-- Trailers -->
+                    <div class="bg-neo-card/50 rounded-xl p-6 border border-white/5">
                         <div class="flex items-center justify-between section-header" @click="toggleSection('trailers')">
                             <div class="flex items-center space-x-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-neo-tertiary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                                 </svg>
                                 <h3 class="text-xl font-semibold">Trailers & Videos</h3>
@@ -798,7 +880,7 @@
                         <div class="section-content mt-4" :class="sections.trailers ? 'expanded' : 'collapsed'">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <template x-for="video in videos" :key="video.key">
-                                    <div class="relative pb-[56.25%] bg-gray-700 rounded-lg overflow-hidden">
+                                    <div class="relative pb-[56.25%] bg-neo-card rounded-xl overflow-hidden">
                                         <iframe 
                                             :src="'https://www.youtube.com/embed/' + video.key"
                                             class="absolute inset-0 w-full h-full"
@@ -814,14 +896,14 @@
                 </div>
             </div>
 
-            <!-- similar content -->
+            <!-- Similar content -->
             <div class="mt-8 md:mt-12">
                 <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-6">Similar Content</h2>
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4" x-show="similarContent.length > 0">
                     <template x-for="item in similarContent" :key="item.id">
                         <div class="relative card-hover">
                             <a :href="'watch.html?id=' + item.id + '&type=' + contentType"
-                               class="block rounded-lg overflow-hidden bg-gray-800 aspect-[2/3]">
+                               class="block rounded-xl overflow-hidden bg-neo-card aspect-[2/3]">
                                 <div class="relative h-full">
                                     <img
                                         :src="'https://image.tmdb.org/t/p/w500' + item.poster_path"
@@ -834,17 +916,17 @@
                                         }" />
                                     <div class="card-overlay absolute inset-0 flex flex-col justify-end p-2 sm:p-3 md:p-4">
                                         <h3 class="text-sm md:text-base font-semibold" x-text="item.title || item.name"></h3>
-                                        <p class="text-gray-400 text-xs md:text-sm flex items-center mt-1">
+                                        <p class="text-neo-textDark text-xs md:text-sm flex items-center mt-1">
                                             <span class="text-yellow-400 mr-1">⭐</span>
                                             <span x-text="(item.vote_average || 'N/A') + '/10'"></span>
                                         </p>
-                                        <p class="text-gray-300 text-xs mt-2 hidden sm:block" x-text="item.overview.substring(0, 100) + '...'"></p>
+                                        <p class="text-neo-textDark text-xs mt-2 hidden sm:block" x-text="item.overview.substring(0, 100) + '...'"></p>
                                     </div>
                                 </div>
                             </a>
                             <button @click.stop="toggleWatchLater(item)"
-                                    class="absolute top-2 right-2 p-1.5 md:p-2 bg-gray-900 bg-opacity-75 rounded-full hover:bg-purple-600 transition-all duration-300"
-                                    :class="isInWatchLater(item) ? 'text-purple-400' : 'text-white'">
+                                    class="absolute top-2 right-2 p-1.5 md:p-2 bg-neo-card/75 rounded-full hover:bg-neo-accent transition-colors duration-300"
+                                    :class="isInWatchLater(item) ? 'text-neo-accent' : 'text-white'">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
                                 </svg>
@@ -856,63 +938,133 @@
         </div>
     </div>
 
-    <!-- streaming services -->
+    <!-- Content Available From Section -->
     <div class="container mx-auto px-6 py-12">
-        <div class="text-center mb-8">
-            <h2 class="text-2xl font-bold text-gray-300">Content Available From</h2>
-            <p class="text-gray-400 mt-2">lmovies aggregates content from various premium streaming platforms</p>
-        </div>
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 items-center justify-items-center opacity-80">
-            <a href="https://netflix.com" target="_blank" class="transform transition-transform hover:scale-105">
+        <div class="glassmorphic p-8 text-center mb-8 transition-all duration-300 hover:shadow-xl">
+            <h2 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-neo-accent to-neo-highlight mb-4">Elevate Your Streaming Experience</h2>
+            <p class="text-xl text-neo-text mb-6">Fastfilmy aggregates premium content from leading streaming platforms - making entertainment accessible to everyone</p>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 items-center justify-items-center mt-8">
+                <a href="https://netflix.com" target="_blank" class="platform-logo group">
+                    <div class="p-4 rounded-xl bg-white/5 backdrop-filter backdrop-blur-lg border border-white/10 group-hover:border-neo-accent/30 transition-all duration-300">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" 
                      alt="Netflix" 
-                     class="h-8 w-auto grayscale hover:grayscale-0 hover:scale-110 hover:brightness-125 transition-all duration-300 transform hover:drop-shadow-[0_0_7px_rgba(229,9,20,0.7)]">
+                             class="h-8 w-auto transition-all duration-300 group-hover:drop-shadow-[0_0_7px_rgba(229,9,20,0.7)]">
+                    </div>
             </a>
-            <a href="https://www.primevideo.com" target="_blank" class="transform transition-transform hover:scale-105">
+                <a href="https://www.primevideo.com" target="_blank" class="platform-logo group">
+                    <div class="p-4 rounded-xl bg-white/5 backdrop-filter backdrop-blur-lg border border-white/10 group-hover:border-[#00A8E1]/30 transition-all duration-300">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Amazon_Prime_Video_logo.svg" 
                      alt="Prime Video" 
-                     class="h-8 w-auto grayscale hover:grayscale-0 hover:scale-110 hover:brightness-125 transition-all duration-300 transform hover:drop-shadow-[0_0_7px_rgba(0,168,225,0.7)]">
+                             class="h-8 w-auto transition-all duration-300 group-hover:drop-shadow-[0_0_7px_rgba(0,168,225,0.7)]">
+                    </div>
             </a>
-            <a href="https://www.disneyplus.com" target="_blank" class="transform transition-transform hover:scale-105">
+                <a href="https://www.disneyplus.com" target="_blank" class="platform-logo group">
+                    <div class="p-4 rounded-xl bg-white/5 backdrop-filter backdrop-blur-lg border border-white/10 group-hover:border-[#0063e5]/30 transition-all duration-300">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg" 
                      alt="Disney+" 
-                     class="h-8 w-auto grayscale hover:grayscale-0 hover:scale-110 hover:brightness-125 transition-all duration-300 transform hover:drop-shadow-[0_0_7px_rgba(113,168,255,0.7)]">
-            </a>
-            <a href="https://www.hulu.com" target="_blank" class="transform transition-transform hover:scale-105">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Hulu_logo_%282018%29.svg" 
-                     alt="Hulu" 
-                     class="h-7 w-auto grayscale hover:grayscale-0 hover:scale-110 hover:brightness-125 transition-all duration-300 transform hover:drop-shadow-[0_0_7px_rgba(28,231,131,0.7)]">
-            </a>
-            <a href="https://www.max.com" target="_blank" class="transform transition-transform hover:scale-105">
+                             class="h-8 w-auto transition-all duration-300 group-hover:drop-shadow-[0_0_7px_rgba(0,99,229,0.7)]">
+                    </div>
+                </a>
+                <a href="https://www.hbomax.com" target="_blank" class="platform-logo group">
+                    <div class="p-4 rounded-xl bg-white/5 backdrop-filter backdrop-blur-lg border border-white/10 group-hover:border-[#9146ff]/30 transition-all duration-300">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/1/17/HBO_Max_Logo.svg" 
                      alt="HBO Max" 
-                     class="h-6 w-auto grayscale hover:grayscale-0 hover:scale-110 hover:brightness-125 transition-all duration-300 transform hover:drop-shadow-[0_0_7px_rgba(116,80,254,0.7)]">
-            </a>
-            <a href="https://tv.apple.com" target="_blank" class="transform transition-transform hover:scale-105">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/2/28/Apple_TV_Plus_Logo.svg" 
-                     alt="Apple TV+" 
-                     class="h-6 w-auto grayscale hover:grayscale-0 hover:scale-110 hover:brightness-125 transition-all duration-300 transform hover:drop-shadow-[0_0_7px_rgba(0,244,244,0.7)]">
-            </a>
+                             class="h-8 w-auto transition-all duration-300 group-hover:drop-shadow-[0_0_7px_rgba(145,70,255,0.7)]">
+                    </div>
+                </a>
+                <a href="https://www.hulu.com" target="_blank" class="platform-logo group">
+                    <div class="p-4 rounded-xl bg-white/5 backdrop-filter backdrop-blur-lg border border-white/10 group-hover:border-[#3DBB3D]/30 transition-all duration-300">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Hulu_Logo.svg" 
+                             alt="Hulu" 
+                             class="h-8 w-auto transition-all duration-300 group-hover:drop-shadow-[0_0_7px_rgba(61,187,61,0.7)]">
+                    </div>
+                </a>
+                <a href="https://www.crunchyroll.com" target="_blank" class="platform-logo group">
+                    <div class="p-4 rounded-xl bg-white/5 backdrop-filter backdrop-blur-lg border border-white/10 group-hover:border-[#F47521]/30 transition-all duration-300">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Crunchyroll_Logo.svg" 
+                             alt="Crunchyroll" 
+                             class="h-8 w-auto transition-all duration-300 group-hover:drop-shadow-[0_0_7px_rgba(244,117,33,0.7)]">
+        </div>
+                </a>
+    </div>
+
+            <div class="mt-8 flex flex-col md:flex-row gap-4 justify-center items-center">
+                <div class="flex items-center bg-neo-accent/20 px-4 py-2 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-neo-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>Unlimited Content Access</span>
+                </div>
+                <div class="flex items-center bg-neo-tertiary/20 px-4 py-2 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-neo-tertiary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>No Subscription Required</span>
+                </div>
+                <div class="flex items-center bg-neo-secondary/20 px-4 py-2 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-neo-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    <span>Ultra-Fast Streaming</span>
+                </div>
+            </div>
         </div>
     </div>
 
-    <footer class="text-gray-400 py-6 mt-12">
-        <div class="container mx-auto text-center">
-            <p class="text-sm">
-                lmovies doesn't store files, but provides links to external services. Legal issues should be discussed with file providers and hosts. The files provided by video providers are not covered by lmovies.
-            </p>
-            <p class="mt-2 text-xs">
-                Made with ❤ by Ambrosial. 02/03/25
-            </p>
-            <p class="mt-2 text-xs">
-                <a href="mailto:contact.lmoviesstream@gmail.com" class="text-purple-400 hover:text-purple-300 transition-colors">contact.lmoviesstream@gmail.com</a>
-            </p>
+    <!-- Footer -->
+    <footer class="border-t border-white/5 py-12 mt-12">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center space-x-3">
+                        <div class="h-10 w-10 bg-gradient-to-br from-neo-accent via-neo-secondary to-neo-tertiary rounded-xl flex items-center justify-center">
+                            <img src="logo.svg" alt="Fastfilmy Logo" class="h-7 w-7">
+                        </div>
+                        <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-neo-accent via-neo-tertiary to-neo-highlight">Fastfilmy</span>
+                    </div>
+                    <p class="mt-4 text-neo-textDark">Click, watch, enjoy. Fastfilmy breaks down the paywall, ensuring that quality content is accessible to everyone.</p>
+                    <div class="mt-6 flex space-x-4">
+                        <a href="https://github.com/korybantes/lmovies" target="_blank" class="text-neo-textDark hover:text-neo-accent transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                        <a href="https://discord.gg/s9kUZw7CqP" target="_blank" class="text-neo-textDark hover:text-neo-accent transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Navigation</h3>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-neo-textDark hover:text-neo-text transition-colors">Home</a></li>
+                        <li><a href="index.html?tab=movies" class="text-neo-textDark hover:text-neo-text transition-colors">Movies</a></li>
+                        <li><a href="index.html?tab=shows" class="text-neo-textDark hover:text-neo-text transition-colors">TV Shows</a></li>
+                        <li><a href="#" @click.prevent="showWatchLater = true" class="text-neo-textDark hover:text-neo-text transition-colors">Watch Later</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Support</h3>
+                    <ul class="space-y-2">
+                        <li><a href="https://github.com/korybantes/lmovies" target="_blank" class="text-neo-textDark hover:text-neo-text transition-colors">GitHub</a></li>
+                        <li><a href="https://github.com/korybantes/lmovies/issues" target="_blank" class="text-neo-textDark hover:text-neo-text transition-colors">Report Issue</a></li>
+                        <li><a href="https://ko-fi.com/ambrosial" target="_blank" class="text-neo-textDark hover:text-neo-text transition-colors">Support Project</a></li>
+                        <li><a href="https://discord.gg/s9kUZw7CqP" target="_blank" class="text-neo-textDark hover:text-neo-text transition-colors">Discord</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-12 pt-8 border-t border-white/5 text-center text-neo-textDark text-sm">
+                <p>© 2023 Fastfilmy. This site does not store any files on its server. All contents are provided by non-affiliated third parties.</p>
+            </div>
         </div>
     </footer>
 
-    <!-- watch later modal -->
+    <!-- Watch later modal -->
     <div x-show="showWatchLater" 
-         class="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-90 flex items-start justify-center"
+         class="fixed inset-0 z-50 overflow-auto bg-neo-bg/90 flex items-start justify-center"
          @click.away="showWatchLater = false"
          x-transition:enter="transition ease-out duration-300"
          x-transition:enter-start="opacity-0"
@@ -920,20 +1072,20 @@
          x-transition:leave="transition ease-in duration-200"
          x-transition:leave-start="opacity-100"
          x-transition:leave-end="opacity-0">
-        <div class="bg-gray-900 rounded-lg w-full max-w-4xl mt-20 modal-animation">
-            <div class="p-6 border-b border-gray-800">
+        <div class="bg-neo-card rounded-xl w-full max-w-4xl mt-20 modal-animation">
+            <div class="p-6 border-b border-neo-card/20">
                 <div class="flex items-center justify-between">
                     <h2 class="text-2xl font-bold">Watch Later</h2>
                     <div class="flex items-center space-x-4">
                         <button @click="showClearConfirm = true" 
                                 x-show="watchLaterItems.length > 0"
-                                class="text-gray-400 hover:text-red-500 flex items-center space-x-2 transition-colors duration-300">
+                                class="text-neo-textDark hover:text-red-500 flex items-center space-x-2 transition-colors duration-300">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
                             <span>Clear All</span>
                         </button>
-                        <button @click="showWatchLater = false" class="text-gray-500 hover:text-white">
+                        <button @click="showWatchLater = false" class="text-neo-textDark hover:text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                             </svg>
@@ -942,12 +1094,12 @@
                 </div>
             </div>
             <div class="p-6">
-                <div x-show="!watchLaterItems.length" class="text-center text-gray-500 py-8">
+                <div x-show="!watchLaterItems.length" class="text-center text-neo-textDark py-8">
                     No items in your watch later list
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     <template x-for="item in watchLaterItems" :key="item.id">
-                        <div class="relative bg-gray-800 rounded-lg overflow-hidden">
+                        <div class="relative bg-neo-card rounded-xl overflow-hidden">
                             <a :href="'watch.html?id=' + item.id + '&type=' + item.type"
                                class="block">
                                 <img :src="'https://image.tmdb.org/t/p/w500' + item.poster_path" 
@@ -955,11 +1107,11 @@
                                      class="w-full h-48 object-cover">
                                 <div class="p-4">
                                     <h3 class="font-medium" x-text="item.title || item.name"></h3>
-                                    <p class="text-gray-400 text-sm mt-1" x-text="'⭐ ' + (item.vote_average || 'N/A') + '/10'"></p>
+                                    <p class="text-neo-textDark text-sm mt-1" x-text="'⭐ ' + (item.vote_average || 'N/A') + '/10'"></p>
                                 </div>
                             </a>
                             <button @click="toggleWatchLater(item)"
-                                    class="absolute top-2 right-2 p-2 bg-gray-900 bg-opacity-75 rounded-full hover:bg-purple-600 transition-all duration-300 text-purple-400">
+                                    class="absolute top-2 right-2 p-2 bg-neo-card/75 rounded-full hover:bg-neo-accent transition-all duration-300 text-neo-accent">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
                                 </svg>
@@ -971,9 +1123,9 @@
         </div>
     </div>
 
-    <!-- clear confirmation modal -->
+    <!-- Clear confirmation modal -->
     <div x-show="showClearConfirm" 
-         class="fixed inset-0 z-[60] overflow-auto bg-black bg-opacity-90 flex items-center justify-center"
+         class="fixed inset-0 z-[60] overflow-auto bg-neo-bg/90 flex items-center justify-center"
          @click.away="showClearConfirm = false"
          x-transition:enter="transition ease-out duration-300"
          x-transition:enter-start="opacity-0 transform scale-95"
@@ -981,7 +1133,7 @@
          x-transition:leave="transition ease-in duration-200"
          x-transition:leave-start="opacity-100 transform scale-100"
          x-transition:leave-end="opacity-0 transform scale-95">
-        <div class="bg-gray-900 rounded-lg w-full max-w-md p-6 modal-animation">
+        <div class="bg-neo-card rounded-xl w-full max-w-md p-6 modal-animation">
             <div class="text-center">
                 <div class="w-16 h-16 rounded-full bg-red-500 bg-opacity-10 mx-auto flex items-center justify-center mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -989,14 +1141,14 @@
                     </svg>
                 </div>
                 <h3 class="text-xl font-bold mb-2">Clear Watch Later List?</h3>
-                <p class="text-gray-400 mb-6">This action cannot be undone. Are you sure you want to remove all items from your watch later list?</p>
+                <p class="text-neo-textDark mb-6">This action cannot be undone. Are you sure you want to remove all items from your watch later list?</p>
                 <div class="flex space-x-3 justify-center">
                     <button @click="showClearConfirm = false" 
-                            class="px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors duration-300">
+                            class="px-4 py-2 bg-neo-card hover:bg-neo-secondary/20 rounded-xl transition-colors duration-300">
                         Cancel
                     </button>
                     <button @click="doClearWatchLater()" 
-                            class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors duration-300">
+                            class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-xl transition-colors duration-300">
                         Clear All
                     </button>
                 </div>
@@ -1111,6 +1263,8 @@
                 viewMode: 'grid',
                 seasonData: null,
                 similarContent: [],
+                progressValue: 0,
+                isScrolled: false,
 
                 async init() {
                     const savedItems = localStorage.getItem('watchLater');
@@ -1130,6 +1284,17 @@
                         this.updateVideoUrl();
                         this.fetchTorrentInfo();
                     }
+
+                    this.setupScrollListener();
+                },
+
+                setupScrollListener() {
+                    window.addEventListener('scroll', () => {
+                        const winScroll = document.documentElement.scrollTop;
+                        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                        this.progressValue = (winScroll / height) * 100;
+                        this.isScrolled = window.pageYOffset > 20;
+                    });
                 },
 
                 async fetchContent() {

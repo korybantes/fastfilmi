@@ -1,5 +1,14 @@
 const availableSources = [
     {
+        id: 'vidora',
+        name: 'Fastfilmy (not hosted here)',
+        isFrench: false,
+        urls: {
+            movie: 'https://vidora.su/movie/{id}?colour=FF2E9F&autoplay=true&autonextepisode=true&backbutton=https%3A%2F%2Ffastfilmy.vercel.app&pausescreen=true&idlecheck=20&logo=https%3A%2F%2Fi.hizliresim.com%2Fc5wc92g.png',
+            tv: 'https://vidora.su/tv/{id}/{season}/{episode}?colour=FF2E9F&autoplay=true&autonextepisode=true&backbutton=https%3A%2F%2Ffastfilmy.vercel.app&pausescreen=true&idlecheck=20&logo=https%3A%2F%2Fi.hizliresim.com%2Fc5wc92g.png'
+        }
+    },
+    {
         id: 'multiembed',
         name: 'MultiEmbed',
         isFrench: false,
@@ -13,8 +22,8 @@ const availableSources = [
         name: 'Frembed',
         isFrench: true,
         urls: {
-            movie: 'https://frembed.live/api/film.php?id={id}',
-            tv: 'https://frembed.live/api/serie.php?id={id}&sa={season}&epi={episode}'
+            movie: 'https://play.frembed.xyz/api/film.php?id={id}',
+            tv: 'https://play.frembed.xyz/api/serie.php?id={id}&sa={season}&epi={episode}'
         }
     },
     {
@@ -189,13 +198,12 @@ const availableSources = [
         }
     },
     {
-        id: 'cinepulse',
-        name: 'CinePulse (4K)',
-        isFrench: true,
-        isApiResponse: true,
+        id: 'vidify',
+        name: 'Vidify',
+        isFrench: false,
         urls: {
-            movie: 'https://api.cinepulse.fr/watch/sources?tmdbId={id}&type=movie',
-            tv: 'https://api.cinepulse.fr/watch/sources?tmdbId={id}&type=tv&season={season}&episode={episode}'
+            movie: 'https://vidify.top/embed/movie/{id}',
+            tv: 'https://vidify.top/embed/tv/{id}/{season}/{episode}'
         }
     }
 ];
