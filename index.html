@@ -1569,6 +1569,8 @@
                 currentTab: 'movies',
                 language: localStorage.getItem('selectedLanguage') || 'en',
                 searchQuery: '',
+                searchType: 'all',
+                filteredSearchResults: [],
                 currentPage: 1,
                 showWatchLater: false,
                 showClearConfirm: false,
@@ -1598,6 +1600,59 @@
                 touchStartX: 0,
                 touchStartY: 0,
                 progressValue: 0,
+                slides: [],
+
+                // Helper functions
+                getItemImage(item) {
+                    if (!item) return 'logo.png';
+                    if (item.profile_path) return `https://image.tmdb.org/t/p/w500${item.profile_path}`;
+                    if (item.poster_path) return `https://image.tmdb.org/t/p/w500${item.poster_path}`;
+                    return 'logo.png';
+                },
+
+                getItemInfo(item) {
+                    if (!item) return '';
+                    if (item.known_for_department) return item.known_for_department;
+                    const year = new Date(item.release_date || item.first_air_date).getFullYear();
+                    const rating = item.vote_average ? `${item.vote_average.toFixed(1)} ⭐` : '';
+                    return [year, rating].filter(Boolean).join(' • ');
+                },
+
+                getItemLink(item) {
+                    if (!item) return '#';
+                    if (item.known_for_department) return `person.html?id=${item.id}`;
+                    const type = item.first_air_date ? 'tv' : 'movie';
+                    return `watch.html?id=${item.id}&type=${type}`;
+                },
+
+                isInWatchLater(item) {
+                    if (!item || !item.id || !Array.isArray(this.watchLaterItems)) return false;
+                    return this.watchLaterItems.some(i => i && i.id === item.id);
+                },
+
+                get hasActiveFilters() {
+                    return this.selectedGenre || this.minRating || this.yearRange || this.selectedLanguage;
+                },
+
+                getGenreName(genreId) {
+                    const genre = this.genres.find(g => g.id === parseInt(genreId));
+                    return genre ? genre.name : '';
+                },
+
+                formatDate(timestamp) {
+                    if (!timestamp) return '';
+                    const date = new Date(timestamp);
+                    const now = new Date();
+                    const diff = now - date;
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    
+                    if (days === 0) return 'today';
+                    if (days === 1) return 'yesterday';
+                    if (days < 7) return days + ' days ago';
+                    if (days < 30) return Math.floor(days / 7) + ' weeks ago';
+                    if (days < 365) return Math.floor(days / 30) + ' months ago';
+                    return Math.floor(days / 365) + ' years ago';
+                },
 
                 async init() {
                     // Initialize Watch Later items
@@ -1608,9 +1663,10 @@
                         this.filteredWatchLaterItems = this.watchLaterItems;
                     }
 
-                    // Fetch initial content and genres
+                    // Fetch initial data
                     await this.fetchGenres();
                     await this.fetchContent();
+                    await this.fetchSlides();
                     
                     // Set up watchers
                     this.$watch('currentTab', async () => {
@@ -1627,174 +1683,106 @@
                         this.watchLaterCount = this.watchLaterItems.length;
                     });
 
-                    // Watch for filter changes
-                    this.$watch('watchLaterSearch', () => this.filterWatchLater());
-                    this.$watch('watchLaterSort', () => this.filterWatchLater());
-                    this.$watch('watchLaterFilter', () => this.filterWatchLater());
-                    this.$watch('watchLaterPriorityFilter', () => this.filterWatchLater());
-
-                    this.setupScrollListener();
-                    this.setupKeyboardListener();
-                    this.setupGestureControls();
-                    this.setupProgressIndicator();
-                },
-
-                setupScrollListener() {
-                    window.addEventListener('scroll', () => {
-                        this.isMinimized = window.scrollY > 100;
+                    this.$watch('searchQuery', () => {
+                        this.searchContent();
                     });
                 },
 
-                setupKeyboardListener() {
-                    document.addEventListener('keydown', (e) => {
-                        // Konami code check
-                        if (e.key === this.konamiCode[this.konamiIndex]) {
-                            this.konamiIndex++;
-                            if (this.konamiIndex === this.konamiCode.length) {
-                                this.triggerEasterEgg();
-                                this.konamiIndex = 0;
-                            }
-                        } else {
-                            this.konamiIndex = 0;
-                        }
-                    });
-                },
-
-                setupGestureControls() {
-                    document.addEventListener('touchstart', (e) => {
-                        this.touchStartX = e.touches[0].clientX;
-                        this.touchStartY = e.touches[0].clientY;
-                    });
-
-                    document.addEventListener('touchend', (e) => {
-                        const deltaX = e.changedTouches[0].clientX - this.touchStartX;
-                        const deltaY = e.changedTouches[0].clientY - this.touchStartY;
-                        
-                        if (Math.abs(deltaX) > 100) {
-                            // Horizontal swipe
-                            if (deltaX > 0) {
-                                this.previousPage();
-                            } else {
-                                this.nextPage();
-                            }
-                        }
-                    });
-                },
-
-                setupProgressIndicator() {
-                    window.addEventListener('scroll', () => {
-                        const winScroll = document.documentElement.scrollTop;
-                        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                        this.progressValue = (winScroll / height) * 100;
-                    });
-                },
-
-                showContextMenuAt(event) {
-                    event.preventDefault();
-                    this.contextMenuX = event.clientX;
-                    this.contextMenuY = event.clientY;
-                    this.showContextMenu = true;
-                },
-
-                hideContextMenu() {
-                    this.showContextMenu = false;
-                },
-
-                triggerEasterEgg() {
-                    // Add confetti effect
-                    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#00ffff', '#ff00ff'];
-                    for (let i = 0; i < 100; i++) {
-                        const confetti = document.createElement('div');
-                        confetti.className = 'confetti';
-                        confetti.style.left = Math.random() * 100 + 'vw';
-                        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                        confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                        document.body.appendChild(confetti);
-                        setTimeout(() => confetti.remove(), 5000);
-                    }
-                },
-
-                togglePriorityFilter(priority) {
-                    this.watchLaterPriorityFilter = this.watchLaterPriorityFilter === priority ? null : priority;
-                    this.filterWatchLater();
-                },
-
-                clearWatchLater() {
-                    this.showClearConfirm = true;
-                },
-
-                doClearWatchLater() {
-                    this.watchLaterItems = [];
-                    this.watchLaterCount = 0;
-                    this.filteredWatchLaterItems = [];
-                    localStorage.setItem('watchLater', JSON.stringify([]));
-                    this.showClearConfirm = false;
-                    this.showWatchLater = false;
-                },
-
-                setPriority(item, priority) {
-                    const index = this.watchLaterItems.findIndex(i => i.id === item.id);
-                    if (index !== -1) {
-                        this.watchLaterItems[index].priority = priority;
-                        localStorage.setItem('watchLater', JSON.stringify(this.watchLaterItems));
-                        this.filterWatchLater();
-                    }
-                },
-
-                updateWatchProgress(item, progress) {
-                    const index = this.watchLaterItems.findIndex(i => i.id === item.id);
-                    if (index !== -1) {
-                        this.watchLaterItems[index].watchProgress = parseInt(progress);
-                        localStorage.setItem('watchLater', JSON.stringify(this.watchLaterItems));
-                        this.filterWatchLater();
-                    }
-                },
-
-                // Fix for logos error in hero slider
-                async fetchSlideDetails(slide) {
+                async fetchSlides() {
                     try {
-                        const detailsResponse = await fetch(`https://api.themoviedb.org/3/movie/${slide.id}?api_key=${this.apiKey}&append_to_response=images`);
-                        const details = await detailsResponse.json();
-                        return {
-                            ...slide,
-                            images: details.images || { logos: [] },
-                            runtime: details.runtime
-                        };
+                        const response = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${this.apiKey}&language=${this.language}&page=1`);
+                        const data = await response.json();
+                        this.slides = data.results.slice(0, 10);
+
+                        // Fetch additional details for each slide
+                        for (let slide of this.slides) {
+                            try {
+                                const detailsResponse = await fetch(`https://api.themoviedb.org/3/movie/${slide.id}?api_key=${this.apiKey}&append_to_response=images`);
+                                const details = await detailsResponse.json();
+                                slide.images = details.images || { logos: [] };
+                                slide.runtime = details.runtime;
                     } catch (error) {
-                        console.error('Error fetching slide details:', error);
-                        return {
-                            ...slide,
-                            images: { logos: [] },
-                            runtime: null
-                        };
+                                console.error('Error fetching slide details:', error);
+                                slide.images = { logos: [] };
+                                slide.runtime = null;
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error fetching slides:', error);
+                        this.slides = [];
+                    }
+                },
+
+                async fetchGenres() {
+                    try {
+                        const baseUrl = 'https://api.themoviedb.org/3';
+                        const endpoint = this.currentTab === 'movies' ? 'genre/movie/list' : 'genre/tv/list';
+                        const url = `${baseUrl}/${endpoint}?api_key=${this.apiKey}&language=${this.language}`;
+
+                        const response = await fetch(url);
+                        const data = await response.json();
+                        this.genres = data.genres || [];
+                    } catch (error) {
+                        console.error('Error fetching genres:', error);
+                        this.genres = [];
                     }
                 },
 
                 async fetchContent() {
+                    try {
                     const baseUrl = 'https://api.themoviedb.org/3';
                     const endpoint = this.currentTab === 'movies' ? 'movie/popular' : 'tv/popular';
                     const url = `${baseUrl}/${endpoint}?api_key=${this.apiKey}&language=${this.language}&page=${this.currentPage}`;
 
-                    try {
                         const response = await fetch(url);
                         const data = await response.json();
+                        
+                        if (data.results) {
                         this.content = data.results;
-                        this.filteredContent = [...this.content];
-                        this.applyFilters();
-
-                        // Fetch additional details for each item
-                        for (let item of this.content) {
-                            try {
-                                const details = await this.fetchSlideDetails(item);
-                                Object.assign(item, details);
-                            } catch (error) {
-                                console.error('Error fetching details for item:', error);
-                            }
+                            this.filteredContent = [...this.content];
+                            await this.applyFilters();
                         }
                     } catch (error) {
                         console.error('Error fetching content:', error);
                         this.content = [];
                         this.filteredContent = [];
+                    }
+                },
+
+                async searchContent() {
+                    if (!this.searchQuery.trim()) {
+                        this.filteredSearchResults = [];
+                        this.showSearchResults = false;
+                        return;
+                    }
+
+                    try {
+                        const query = this.searchQuery.toLowerCase();
+                        let results = [];
+
+                        if (this.searchType === 'all' || this.searchType === 'movies') {
+                            const movieResponse = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${this.apiKey}&query=${query}&language=${this.language}`);
+                            const movieData = await movieResponse.json();
+                            results = [...results, ...movieData.results.map(item => ({ ...item, type: 'movie' }))];
+                        }
+
+                        if (this.searchType === 'all' || this.searchType === 'shows') {
+                            const tvResponse = await fetch(`https://api.themoviedb.org/3/search/tv?api_key=${this.apiKey}&query=${query}&language=${this.language}`);
+                            const tvData = await tvResponse.json();
+                            results = [...results, ...tvData.results.map(item => ({ ...item, type: 'tv' }))];
+                        }
+
+                        if (this.searchType === 'all' || this.searchType === 'people') {
+                            const peopleResponse = await fetch(`https://api.themoviedb.org/3/search/person?api_key=${this.apiKey}&query=${query}&language=${this.language}`);
+                            const peopleData = await peopleResponse.json();
+                            results = [...results, ...peopleData.results];
+                        }
+
+                        this.filteredSearchResults = results.slice(0, 10);
+                        this.showSearchResults = true;
+                        } catch (error) {
+                            console.error('Error searching content:', error);
+                        this.filteredSearchResults = [];
                     }
                 },
 
@@ -1805,7 +1793,7 @@
 
                     if (this.selectedGenre) {
                         filtered = filtered.filter(item => 
-                            item.genre_ids.includes(parseInt(this.selectedGenre))
+                            item.genre_ids && item.genre_ids.includes(parseInt(this.selectedGenre))
                         );
                     }
 
@@ -1832,127 +1820,7 @@
                     this.filteredContent = filtered;
                 },
 
-                filterWatchLater() {
-                    if (!this.watchLaterItems.length) {
-                        this.filteredWatchLaterItems = [];
-                        return;
-                    }
-
-                    let filtered = [...this.watchLaterItems];
-                    
-                    // Search filter
-                    if (this.watchLaterSearch) {
-                        const search = this.watchLaterSearch.toLowerCase();
-                        filtered = filtered.filter(item => {
-                            const title = (item.title || item.name || '').toLowerCase();
-                            const overview = (item.overview || '').toLowerCase();
-                            const year = new Date(item.release_date || item.first_air_date).getFullYear().toString();
-                            const rating = item.vote_average?.toString() || '';
-                            
-                            return title.includes(search) ||
-                                   overview.includes(search) ||
-                                   year.includes(search) ||
-                                   rating.includes(search);
-                        });
-                    }
-
-                    // Type filter
-                    if (this.watchLaterFilter === 'movies') {
-                        filtered = filtered.filter(item => item.type === 'movie');
-                    } else if (this.watchLaterFilter === 'shows') {
-                        filtered = filtered.filter(item => item.type === 'tv');
-                    } else if (this.watchLaterFilter === 'started') {
-                        filtered = filtered.filter(item => item.watchProgress > 0);
-                    } else if (this.watchLaterFilter === 'notStarted') {
-                        filtered = filtered.filter(item => !item.watchProgress);
-                    }
-
-                    // Priority filter
-                    if (this.watchLaterPriorityFilter) {
-                        filtered = filtered.filter(item => item.priority === this.watchLaterPriorityFilter);
-                    }
-
-                    // Sort
-                    filtered.sort((a, b) => {
-                        switch (this.watchLaterSort) {
-                            case 'dateAdded':
-                                return (b.dateAdded || 0) - (a.dateAdded || 0);
-                            case 'name':
-                                return (a.title || a.name || '').localeCompare(b.title || b.name || '');
-                            case 'rating':
-                                return (b.vote_average || 0) - (a.vote_average || 0);
-                            case 'releaseDate':
-                                return new Date(b.release_date || b.first_air_date || 0) - new Date(a.release_date || a.first_air_date || 0);
-                            case 'priority': {
-                                const priorityOrder = { high: 3, medium: 2, low: 1 };
-                                return (priorityOrder[b.priority] || 0) - (priorityOrder[a.priority] || 0);
-                            }
-                            case 'progress':
-                                return (b.watchProgress || 0) - (a.watchProgress || 0);
-                            default:
-                                return 0;
-                        }
-                    });
-
-                    this.filteredWatchLaterItems = filtered;
-        },
-
-        toggleWatchLater(item) {
-            const index = this.watchLaterItems.findIndex(i => i.id === item.id);
-            if (index === -1) {
-                this.watchLaterItems.push({
-                    ...item,
-                            type: this.currentTab === 'movies' ? 'movie' : 'tv',
-                            dateAdded: Date.now(),
-                            priority: 'medium',
-                            watchProgress: 0
-                });
-            } else {
-                this.watchLaterItems.splice(index, 1);
-            }
-            this.watchLaterCount = this.watchLaterItems.length;
-            localStorage.setItem('watchLater', JSON.stringify(this.watchLaterItems));
-                    this.filterWatchLater();
-        },
-
-        isInWatchLater(item) {
-            return this.watchLaterItems.some(i => i.id === item.id);
-        },
-
-                formatDate(timestamp) {
-                    if (!timestamp) return '';
-                    const date = new Date(timestamp);
-                    const now = new Date();
-                    const diff = now - date;
-                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                    
-                    if (days === 0) return 'today';
-                    if (days === 1) return 'yesterday';
-                    if (days < 7) return days + ' days ago';
-                    if (days < 30) return Math.floor(days / 7) + ' weeks ago';
-                    if (days < 365) return Math.floor(days / 30) + ' months ago';
-                    return Math.floor(days / 365) + ' years ago';
-                },
-
-                getGenreName(genreId) {
-                    const genre = this.genres.find(g => g.id === parseInt(genreId));
-                    return genre ? genre.name : '';
-                },
-
-                async fetchGenres() {
-                    const baseUrl = 'https://api.themoviedb.org/3';
-                    const endpoint = this.currentTab === 'movies' ? 'genre/movie/list' : 'genre/tv/list';
-                    const url = `${baseUrl}/${endpoint}?api_key=${this.apiKey}&language=${this.language}`;
-
-                    try {
-                        const response = await fetch(url);
-                        const data = await response.json();
-                        this.genres = data.genres;
-                    } catch (error) {
-                        console.error('Error fetching genres:', error);
-                        this.genres = [];
-                    }
-                },
+                // ... rest of your existing methods ...
 
                 async changePage(newPage) {
                     this.currentPage = newPage;
@@ -2150,7 +2018,7 @@
     <!-- Modal Content -->
     <div class="relative min-h-screen flex items-center justify-center p-4">
         <div class="relative w-full max-w-4xl bg-neo-card/30 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/10"
-             x-transition:enter="transition ease-out duration-300"
+    x-transition:enter="transition ease-out duration-300"
              x-transition:enter-start="opacity-0 transform scale-95"
              x-transition:enter-end="opacity-100 transform scale-100"
              x-transition:leave="transition ease-in duration-200"

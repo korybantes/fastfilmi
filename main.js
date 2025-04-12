@@ -223,3 +223,4 @@ app.on('before-quit', () => {
     isQuitting = true;
     globalShortcut.unregisterAll();
 }); 
+ 

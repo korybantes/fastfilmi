@@ -467,3 +467,16 @@
 
 </body>
 </html>
+    <script>
+        if (!localStorage.getItem('defaultSource')) {
+            localStorage.setItem('defaultSource', 'embedsu');
+        }
+        if (localStorage.getItem('showParticles') === null) {
+            localStorage.setItem('showParticles', 'true');
+        }
+        if (localStorage.getItem('showUpdateNotice') === null) {
+            localStorage.setItem('showUpdateNotice', 'true');
+        }
+    </script>
+</body>
+</html>
